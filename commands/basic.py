@@ -1,15 +1,67 @@
 from pyrogram import filters, enums
 from core import app
 from cfg import PREFIXES
+import time
+import os
 
 @app.on_message(filters.me & filters.command("help", prefixes=PREFIXES))
 async def help(client, message):
 
     text = """
 <b>Все команды бота</b>
-<blockquote>
+
 <code>help</code> - список команд
-</blockquote>
+<code>ping</code> - пинг
+<code>info</code> - информация пользователя
 """
+
+    await message.edit(text, parse_mode = enums.ParseMode.HTML)
+
+@app.on_message(filters.me & filters.command("ping", prefixes=PREFIXES))
+async def ping(client, message):
+
+    start = time.time()
+    await message.edit("🏓 Считаю...")
+    end = time.time()
+
+    ping = round((end - start) * 1000)
+
+    await message.edit(f"<b>🏓 ПОНГ \nВремя задержки: <code>{ping}</code> мс", parse_mode = enums.ParseMode.HTML)
+
+@app.on_message(filters.me & filters.command("info", prefixes=PREFIXES))
+async def info(client, message):
+
+    reply = message.reply_to_message
+
+    if reply:
+        user = reply.from_user
+
+    user = await client.get_me()
+
+    user = await client.get_users(user.id)
+
+    username = f"@{user.username}" if user.username else "Нету"
+    last_name = f"{user.last_name}" if user.last_name else "Нету"
+    bio = f"{user.bio}" if user.bio else "Нету"
+
+    text = f"""
+👤 Информация о <b>{user.first_name}</b>
+
+Имя: <code>{user.first_name}</code>
+Фамилия: <code>{last_name}</code>
+Username: <code>{username}</code>
+Id: <code>{user.id}</code>
+Описание: <code>{bio}</code>
+"""
+
+    if user.photo:
+        avatar = await client.download_media(user.photo.big_file_id, file_name=f"avatar_{user.id}.jpg")
+
+        try:
+            await message.reply_photo(avatar, caption = text, parse_mode = enums.ParseMode.HTML)
+
+        finally:
+            if os.path.exists(avatar):
+                os.remove(avatar)
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
