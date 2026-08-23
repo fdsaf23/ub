@@ -123,7 +123,7 @@ async def set(client, message):
             return await message.edit(f"Имя изменено на <b>{value}</b>", parse_mode = enums.ParseMode.HTML)
         
         elif field == "user":
-            await client.update_profile(username = value)
+            await client.set_username(value)
             return await message.edit(f"Юзернейм изменен на <b>{value}</b>", parse_mode = enums.ParseMode.HTML)
         
         elif field == "bio":
@@ -164,14 +164,15 @@ async def restore(client, message):
         data = json.load(f)
 
     name = data.get("first_name")
-    username = data.get("username")
+    username = data.get("username").strip("@")
     bio = data.get("bio")
 
     await client.update_profile(
         first_name = name,
-        username = username.strip("@"),
         bio = bio
     )
+
+    await client.set_username(username)
 
     text = f"""
 ✅ <b>Профиль восстановлен</b>
