@@ -4,6 +4,7 @@ from cfg import PREFIXES
 import time
 import os
 from html import escape
+import json
 
 @app.on_message(filters.me & filters.command("help", prefixes=PREFIXES))
 async def help(client, message):
@@ -134,3 +135,50 @@ async def set(client, message):
 
     except Exception as e:
         return await message.edit(f"{e}")
+
+@app.on_message(filters.me & filters.command("backup", prefixes=PREFIXES))
+async def backup(client, message):
+
+    profile = await client.get_chat("me")
+
+    os.makedirs("backup", exist_ok=True)
+
+    data = {
+        "first_name": profile.first_name,
+        "username": profile.username,
+        "bio": profile.bio
+    }
+
+    with open("backup/profile.json", "w", encoding='utf-8') as f:
+        f.dump(data, f, ensure_askii=False, indent=3)
+
+    await message.edit("✅ Профиль сохранен")
+
+@app.on_message(filters.me & filters.command("restore", prefixes=PREFIXES))
+async def restore(client, message):
+
+    if not os.path.exists("backup/profile.json"):
+        return await message.edit("❌ Бэкап не найден")
+
+    with open("backup/profile.json", "r", encoding='utf-8') as f:
+        data = json.load(f)
+
+    name = data.get("first_name")
+    username = data.get("username")
+    bio = data.get("bio")
+
+    await client.update_profile(
+        first_name = name,
+        username = username.strip("@"),
+        bio = bio
+    )
+
+    text = f"""
+✅ <b>Профиль восстановлен</b>
+
+Имя: <code>{name}</code>
+Username: <code>{username}</code>
+Био: <code>{bio}</code>
+"""
+
+    await message.edit(text, parse_mode = enums.ParseMode.HTML)
