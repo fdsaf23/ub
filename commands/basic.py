@@ -39,10 +39,10 @@ async def info(client, message):
 
     reply = message.reply_to_message
 
+    user = await client.get_me()
+
     if reply:
         user = reply.from_user
-
-    user = await client.get_me()
 
     user = await client.get_users(user.id)
 
@@ -66,6 +66,8 @@ Id: <code>{user.id}</code>
 
         try:
             await message.reply_photo(avatar, caption = text, parse_mode = enums.ParseMode.HTML)
+
+            await message.delete()
 
         finally:
             if os.path.exists(avatar):
