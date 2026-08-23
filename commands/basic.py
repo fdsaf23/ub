@@ -57,14 +57,16 @@ Id: <code>{user.id}</code>
 """
 
     if user.photo:
+        
         avatar = await client.download_media(user.photo.big_file_id, file_name=f"avatar_{user.id}.jpeg")
 
         try:
             await message.reply_photo(avatar, caption = text, parse_mode = enums.ParseMode.HTML)
+            await message.delete()
 
         finally:
             if os.path.exists(avatar):
                 os.remove(avatar)
-
-    await message.edit(text, parse_mode = enums.ParseMode.HTML)
-
+                
+    if not user.photo:
+        await message.edit(text, parse_mode = enums.ParseMode.HTML)
