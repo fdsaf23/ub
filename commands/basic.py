@@ -44,7 +44,7 @@ async def info(client, message):
     username = f"@{user.username}" if user.username else "Нету"
     last_name = escape(user.last_name) if user.last_name else "Нету"
     bio = escape(user.bio) if user.bio else "Нету"
-    first_name = escape(user.fist_name) if user.first_name else "Нету"
+    first_name = escape(user.first_name) if user.first_name else "Нету"
 
     text = f"""
 👤 Информация о <b>{first_name}</b>
@@ -57,7 +57,7 @@ Id: <code>{user.id}</code>
 """
 
     if user.photo:
-        avatar = await client.download_media(user.photo.big_file_id, file_name=f"avatar_{user.id}.jpg")
+        avatar = await client.download_media(user.photo.big_file_id, file_name=f"avatar_{user.id}.jpeg")
 
         try:
             await message.reply_photo(avatar, caption = text, parse_mode = enums.ParseMode.HTML)
