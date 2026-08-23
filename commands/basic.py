@@ -104,3 +104,33 @@ Id: <code>{message.chat.id}</code>
 
     if not chat.photo:
         await message.edit(text)
+
+@app.on_message(filters.me & filters.command("set", prefixes=PREFIXES))
+async def set(client, message):
+
+    args = message.text.split(maxsplit = 2)
+
+    if len(args) < 3:
+        return await message.edit("Используй: .set name|user|bio значение")
+    
+    field = args[1].lower()
+    value = args[2].strip()
+
+    try:
+        if field == "name":
+            await client.update_profile(first_name=value)
+            return await message.edit(f"Имя изменено на <b>{value}</b>", parse_mode = enums.ParseMode.HTML)
+        
+        elif field == "user":
+            await client.update_profile(username = value)
+            return await message.edit(f"Юзернейм изменен на <b>{value}</b>", parse_mode = enums.ParseMode.HTML)
+        
+        elif field == "bio":
+            await client.update_profile(bio=value)
+            return await message.edit(f"Описание изменено на <b>{value}</b>", parse_mode = enums.ParseMode.HTML)
+
+        else:
+            await message.edit("Используй: name OR user OR bio")
+
+    except Exception as e:
+        return await message.edit(f"{e}")
