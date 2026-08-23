@@ -150,7 +150,7 @@ async def backup(client, message):
     }
 
     with open("backup/profile.json", "w", encoding='utf-8') as f:
-        f.dump(data, f, ensure_askii=False, indent=3)
+        json.dump(data, f, ensure_ascii=False, indent=3)
 
     await message.edit("✅ Профиль сохранен")
 
