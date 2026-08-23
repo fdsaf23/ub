@@ -34,10 +34,10 @@ async def info(client, message):
 
     reply = message.reply_to_message
 
+    user = await client.get_me()
+
     if reply:
         user = reply.from_user
-
-    user = await client.get_me()
 
     user = await client.get_chat(user.id)
 
