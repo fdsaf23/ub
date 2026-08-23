@@ -3,6 +3,7 @@ from core import app
 from cfg import PREFIXES
 import time
 import os
+from html import escape
 
 @app.on_message(filters.me & filters.command("help", prefixes=PREFIXES))
 async def help(client, message):
@@ -38,16 +39,17 @@ async def info(client, message):
 
     user = await client.get_me()
 
-    user = await client.get_users(user.id)
+    user = await client.get_chat(user.id)
 
     username = f"@{user.username}" if user.username else "Нету"
-    last_name = f"{user.last_name}" if user.last_name else "Нету"
-    bio = f"{user.bio}" if user.bio else "Нету"
+    last_name = escape(user.last_name) if user.last_name else "Нету"
+    bio = escape(user.bio) if user.bio else "Нету"
+    first_name = escape(user.fist_name) if user.first_name else "Нету"
 
     text = f"""
-👤 Информация о <b>{user.first_name}</b>
+👤 Информация о <b>{first_name}</b>
 
-Имя: <code>{user.first_name}</code>
+Имя: <code>{first_name}</code>
 Фамилия: <code>{last_name}</code>
 Username: <code>{username}</code>
 Id: <code>{user.id}</code>
@@ -65,3 +67,4 @@ Id: <code>{user.id}</code>
                 os.remove(avatar)
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
+
