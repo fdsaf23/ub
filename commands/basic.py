@@ -14,6 +14,10 @@ async def help(client, message):
 <code>help</code> - список команд
 <code>ping</code> - пинг
 <code>info</code> - информация пользователя
+<code>cinfo</code> - инфомация о чате
+<code>set</code> - изменить параметр профиля
+<code>backup</code> - бэкап профиля
+<code>restore</code> - вернуть профиль бэкапа
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
@@ -34,39 +38,69 @@ async def info(client, message):
 
     reply = message.reply_to_message
 
-    user = await client.get_me()
-
     if reply:
         user = reply.from_user
 
-    user = await client.get_chat(user.id)
+    user = await client.get_me()
+
+    user = await client.get_users(user.id)
 
     username = f"@{user.username}" if user.username else "Нету"
     last_name = escape(user.last_name) if user.last_name else "Нету"
     bio = escape(user.bio) if user.bio else "Нету"
-    first_name = escape(user.first_name) if user.first_name else "Нету"
+    first_name = escape(user.fist_name) if user.first_name else "Нету"
 
     text = f"""
 👤 Информация о <b>{first_name}</b>
 
 Имя: <code>{first_name}</code>
 Фамилия: <code>{last_name}</code>
-Username: <code>{username}</code>
+Username: {username}
 Id: <code>{user.id}</code>
 Описание: <code>{bio}</code>
 """
 
     if user.photo:
-        
-        avatar = await client.download_media(user.photo.big_file_id, file_name=f"avatar_{user.id}.jpeg")
+        avatar = await client.download_media(user.photo.big_file_id, file_name=f"avatar_{user.id}.jpg")
 
         try:
             await message.reply_photo(avatar, caption = text, parse_mode = enums.ParseMode.HTML)
-            await message.delete()
 
         finally:
             if os.path.exists(avatar):
                 os.remove(avatar)
-                
-    if not user.photo:
-        await message.edit(text, parse_mode = enums.ParseMode.HTML)
+
+    await message.edit(text, parse_mode = enums.ParseMode.HTML)
+
+@app.on_message(filters.me & filters.command("cinfo", prefixes=PREFIXES))
+async def chatinfo(client, message):
+
+    chat = await client.get_chat(message.chat.id)
+
+    username = f"https://t.me/{chat.username}" if chat.username else "Нету"
+
+    text = f"""
+ℹ Информация о <b>{chat.title}</b>
+
+Название: <code>{chat.title}</code>
+Ссылка: {username}
+Id: <code>{message.chat.id}</code>
+Кол-во участников: <code>{chat.members_count}</code>
+"""
+
+    if chat.photo:
+
+        avatar = await client.download_media(chat.photo.big_file_id, file_name = f"chatavatar_{chat.id}.jpeg")
+
+        try:
+            await message.reply_photo(avatar, caption = text, parse_mode = enums.ParseMode.HTML)
+
+            await message.delete()
+
+        finally:
+
+            if os.path.exists(avatar):
+                os.remove(avatar)
+
+    if not chat.photo:
+        await message.edit(text)
