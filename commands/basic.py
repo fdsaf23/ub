@@ -172,7 +172,14 @@ async def restore(client, message):
         bio = bio
     )
 
-    await client.set_username(username)
+    if username:
+        me = await client.get_me()
+
+        current_user = me.username
+
+        if current_user.lower() != username:
+    
+            await client.set_username(username)
 
     text = f"""
 ✅ <b>Профиль восстановлен</b>
