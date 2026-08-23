@@ -36,9 +36,6 @@ async def info(client, message):
 
     user = await client.get_me()
 
-    if len(message.command) > 1:
-        user = message.command[1]
-
     if reply:
         user = reply.from_user
 
