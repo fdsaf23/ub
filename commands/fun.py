@@ -307,19 +307,26 @@ async def bull(client, message):
 async def bull_loop(client, message):
     if not message.from_user:
         return
-        
+
     user_id = message.from_user.id
 
     if user_id not in bull_active:
         return
-    
-    with open("bull/shablon.txt", "r", encoding = "utf-8") as f:
-        phrases = [line.strip() for line in f if line.strip()]
 
-    if user_id in bull_active:
-        phrase = random.choice(phrases)
-            
-        await client.send_message(
-            chat_id=message.chat.id,
-            text=phrase,
-            reply_to_message_id=message.id)
+    with open("bull/shablon.txt", "r", encoding="utf-8") as file:
+        phrases = [
+            line.strip()
+            for line in file
+            if line.strip()
+        ]
+
+    if not phrases:
+        return
+
+    phrase = random.choice(phrases)
+
+    await client.send_message(
+        chat_id=message.chat.id,
+        text=phrase,
+        reply_to_message_id=message.id
+    )
