@@ -266,7 +266,7 @@ async def typing(client, message):
         try:
             while chat_id in typing_active:
                 await app.send_chat_action(chat_id, enums.ChatAction.TYPING)
-                await asyncio.sleep(5)
+                await asyncio.sleep(8)
         finally:
             typing_active.pop(chat_id, None)
 
