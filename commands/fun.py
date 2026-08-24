@@ -140,7 +140,7 @@ async def quote(client, message):
     message_y = id_bottom + (username_top - id_bottom - text_height) // 2
 
     draw.multiline_text(
-        (text_x, message_y - 15),
+        (text_x, message_y - 10),
         text,
         font=font_text,
         fill="white",
