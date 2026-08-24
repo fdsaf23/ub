@@ -201,7 +201,12 @@ async def onda(client, message):
     for step in steps:
         await message.edit(step)
         await asyncio.sleep(0.4)
-        
+
+    url = "https://www.image2url.com/r2/default/files/1787585136007-cd55e8a9-6014-4de7-870a-fa00010cfd4b.mp4"
+
+    await message.reply_video(url)
+
+    await message.delete()
 
 
 
