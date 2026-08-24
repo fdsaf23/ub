@@ -113,6 +113,22 @@ async def add_react(client, message):
 
     await message.edit(f"✅ Автореакция добавлена \n\nТаргет: <code>{reply.from_user.first_name}</code>\nРеакция: {emoji}")
 
+@app.on_message(filters.me & filters.command("dreact"))
+async def dreact(client, message):
+    reply = message.reply_to_message
+
+    if not reply or not reply.from_user:
+        return await message.edit("❌ Используй ответом на сообщение пользователя")
+
+    user_id = reply.from_user.id
+
+    if user_id not in react:
+        return await message.edit("❌ Автореакции на пользователя не найдена")
+
+    del react[user_id]
+
+    await message.edit(f"✅ Автореакция на <b>{reply.from_user.first_name}</b> удалена", parse_mode = enums.ParseMode.HTML)
+
 @app.on_message(~filters.me & filters.incoming)
 async def incoming_handler(client, message):
 
