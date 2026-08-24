@@ -116,7 +116,7 @@ async def replies_array(client, message):
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
 
 @app.on_message(~filters.me & filters.incoming)
-async def reply(client, message):
+async def reply_handler(client, message):
 
     if not message.from_user:
         return
@@ -126,8 +126,6 @@ async def reply(client, message):
     if user_id not in replies:
         return
 
-    await client.send_message(
-        chat = message.chat.id,
-        text = replies[user_id],
-        reply_to_message_id = message.id
+    await message.reply(
+        text = replies[user_id]
     )
