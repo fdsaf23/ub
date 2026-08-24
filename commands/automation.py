@@ -37,8 +37,8 @@ async def afk_reply(client, message):
         return
 
     if AFK:
-        time.sleep(15)
         await message.reply(AFK_REASON)
+        time.sleep(15)
 
 @app.on_message(filters.me & filters.command("unafk", prefixes = PREFIXES))
 async def unafk(client, message):
