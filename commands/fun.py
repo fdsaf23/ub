@@ -43,6 +43,7 @@ async def quote(client, message):
 
     raw_img = Image.open(avatar_path).convert("RGBA")
 
+    # Фон
     bg = raw_img.resize((1280, 720))
     bg = bg.filter(ImageFilter.BoxBlur(radius=15))
 
@@ -57,6 +58,7 @@ async def quote(client, message):
 
     mask = Image.new("L", (avatar_size, avatar_size), 0)
     mask_draw = ImageDraw.Draw(mask)
+
     mask_draw.rounded_rectangle(
         (0, 0, avatar_size, avatar_size),
         radius=40,
@@ -70,22 +72,31 @@ async def quote(client, message):
 
     bg.alpha_composite(avatar_img, (avatar_x, avatar_y))
 
-    # Левая граница всего текста
-    text_x = 430
-    id_y = 210
-    message_y = 275
+    # Общая левая граница текста
+    text_x = avatar_x + avatar_size + 70
 
-    # ID сверху
+    # ID — на уровне верхнего края аватарки
     draw.text(
-        (text_x, id_y),
+        (text_x, avatar_y),
         f"ID: {user.id}",
         font=font_id,
         fill="white",
-        anchor="la"
+        anchor="lt"
     )
 
-    # Перенос текста по ширине
-    max_width = 730
+    # Username — на уровне нижнего края аватарки
+    username_text = f"@{user.username}" if user.username else user.first_name
+
+    draw.text(
+        (text_x, avatar_y + avatar_size),
+        username_text,
+        font=font_username,
+        fill=(210, 210, 210),
+        anchor="lb"
+    )
+
+    # Перенос сообщения по словам
+    max_width = 700
     lines = []
     current_line = ""
 
@@ -107,35 +118,32 @@ async def quote(client, message):
 
     text = "\n".join(lines)
 
-    # Текст сообщения
+    # Вычисляем высоту сообщения
+    text_bbox = draw.multiline_textbbox(
+        (0, 0),
+        text,
+        font=font_text,
+        spacing=8
+    )
+
+    text_height = text_bbox[3] - text_bbox[1]
+
+    # Границы свободной области между ID и username
+    id_bottom = avatar_y + 55
+    username_top = avatar_y + avatar_size - 45
+
+    # Сообщение центрируется между ними
+    message_y = id_bottom + (username_top - id_bottom - text_height) // 2
+
     draw.multiline_text(
         (text_x, message_y),
         text,
         font=font_text,
         fill="white",
-        anchor="la",
+        anchor="lt",
         align="left",
-        spacing=5
+        spacing=8
     )
-
-    # Высота текста — чтобы username был сразу под сообщением
-    text_bbox = draw.multiline_textbbox(
-        (text_x, message_y),
-        text,
-        font=font_text,
-        spacing=5
-    )
-
-    username_y = text_bbox[3] + 15
-
-    if user.username:
-        draw.text(
-            (text_x, username_y),
-            f"@{user.username}",
-            font=font_username,
-            fill=(210, 210, 210),
-            anchor="la"
-        )
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", quality=85)
