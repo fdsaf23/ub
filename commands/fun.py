@@ -289,7 +289,22 @@ async def typing(client, message):
 
 @app.on_message(filters.me & filters.command('bull', prefixes = PREFIXES))
 async def bull(client, message):
+
+    args = message.text.split(maxsplit=2)
+
     reply = message.reply_to_message
+
+    if len(args) > 1 and args[1].lower() == "stop":
+        
+        if not reply or not reply.from_user:
+            return await message.edit("❌ Используй реплеем")
+        
+        if reply.from_user.id not in bull_active:
+            return await message.edit("❌ Пользователь не найден")
+        
+        bull_active.remove(reply.from_user.id)
+
+        return await message.edit("Пользователь удален")
 
     if not reply or not reply.from_user:
         return await message.edit("❌ Используй реплеем")
@@ -297,7 +312,7 @@ async def bull(client, message):
     user_id = reply.from_user.id
 
     if user_id in bull_active:
-        return await message.edit("Пользователь уже добавлен")
+        return await message.edit("❌ Пользователь уже добавлен")
 
     bull_active.add(user_id)
 
