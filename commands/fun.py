@@ -300,6 +300,17 @@ async def bull(client, message):
         return await message.edit("Пользователь уже добавлен")
 
     async def bull_loop():
-        with open
+        with open("bull/shablon.txt", "r", encoding = "utf-8") as f:
+            phrases = [line.strip() for line in f if line.strip()]
+        try:
+            phrases = random.choice(phrases)
+            while user_id in bull_active:
+                await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
+                await asyncio.sleep(3.5)
+                await message.reply_text(phrases)
+        finally:
+            bull_active.pop(user_id, None)
+
+    bull_active[user_id] = asyncio.create_task(bull_loop())
 
 
