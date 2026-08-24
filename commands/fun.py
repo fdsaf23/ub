@@ -318,7 +318,8 @@ async def bull_loop(client, message):
 
     if user_id in bull_active:
         phrase = random.choice(phrases)
-                    
-        await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
-        await asyncio.sleep(3.5)
-        await message.reply(phrase)
+            
+        await app.send_message(
+            chat_id=message.chat.id,
+            text=phrase,
+            reply_to_message_id=message.id
