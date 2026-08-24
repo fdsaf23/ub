@@ -328,5 +328,5 @@ async def bull_loop(client, message):
     await client.send_message(
         chat_id=message.chat.id,
         text=phrase,
-        reply_to_message_id=message.id
+        reply_to_message_id=message.id)
     
