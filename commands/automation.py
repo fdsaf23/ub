@@ -86,7 +86,7 @@ async def replies_array(client, message):
 
         name = user.first_name
 
-        text += f"{number}. <code>{name}</code> → <code>{replies[user_id]}</code>"
+        text += f"{number}. <code>{name}</code> → <code>{replies[user_id]}</code>\n"
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
 
@@ -143,7 +143,7 @@ async def list_react(client, message):
 
         name = user.first_name
 
-        text += f"{num}. <code>{name}</code> → <code>{react[user_id]}</code>"
+        text += f"{num}. <code>{name}</code> → <code>{react[user_id]}</code>\n"
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
 
