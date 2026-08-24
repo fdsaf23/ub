@@ -86,9 +86,7 @@ async def replies_array(client, message):
 
         name = user.first_name
 
-        text += f"""
-{number}. <code>{name}</code> → <code>{replies[user_id]}</code>
-"""
+        text += f"{number}. <code>{name}</code> → <code>{replies[user_id]}</code>"
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
 
@@ -114,7 +112,7 @@ async def add_react(client, message):
     
     react[user_id] = reaction
 
-    await message.edit(f"✅ Автореакция добавлена \n\nТаргет: <code>{reply.from_user.first_name}</code>\nРеакция: {emoji}")
+    await message.edit(f"✅ Автореакция добавлена \n\nТаргет: <code>{reply.from_user.first_name}</code>\nРеакция: {reaction}")
 
 @app.on_message(filters.me & filters.command("dreact", prefixes = PREFIXES))
 async def dreact(client, message):
@@ -131,6 +129,23 @@ async def dreact(client, message):
     del react[user_id]
 
     await message.edit(f"✅ Автореакция на <b>{reply.from_user.first_name}</b> удалена", parse_mode = enums.ParseMode.HTML)
+
+@app.on_message(filters.me & filters.command("lreact", prefixes = PREFIXES))
+async def list_react(client, message):
+
+    if not react:
+        return message.edit("📋 Список пуст")
+
+    text = "📋 Список автореакций:\n"
+
+    for num, user_id in enumerate(react, 1):
+        user = await client.get_users(user_id)
+
+        name = user.first_name
+
+        text += f"{num}. <code>{name}</code> → <code>{react[user_id]}</code>"
+
+    await message.edit(text, parse_mode = enums.ParseMode.HTML)
 
 @app.on_message(~filters.me & filters.incoming)
 async def incoming_handler(client, message):
