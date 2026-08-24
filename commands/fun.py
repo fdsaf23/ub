@@ -2,7 +2,7 @@ import os
 import textwrap
 from datetime import datetime
 from io import BytesIO
-
+import PIL
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageStat
 
 from pyrogram import filters
