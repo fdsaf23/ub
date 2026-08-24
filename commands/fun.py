@@ -204,7 +204,7 @@ async def onda(client, message):
         await asyncio.sleep(0.61)
     await asyncio.sleep(0.7)
 
-    url = "https://www.image2url.com/r2/default/files/1787585136007-cd55e8a9-6014-4de7-870a-fa00010cfd4b.mp4"
+    url = ("https://www.image2url.com/r2/default/files/1787585136007-cd55e8a9-6014-4de7-870a-fa00010cfd4b.mp4")
 
     text = """<blockquote>Я стою как thunderstorm, зови меня «onda andar»
 Зеркала меня слепят, зови меня «onda andar»
@@ -215,13 +215,13 @@ async def onda(client, message):
 Я стою как thunderstorm, зови меня «onda andar»
 Зеркала меня слепят, зови меня «onda andar»</blockquote>"""
 
-await client.send_video(
-    message.chat.id,
-    video=url,
-    caption=text,
-    supports_streaming=True,
-    parse_mode=enums.ParseMode.HTML
-)
+    await client.send_video(
+        message.chat.id,
+        video=url,
+        caption=text,
+        supports_streaming=True,
+        parse_mode=enums.ParseMode.HTML
+    )
 
     await message.delete()
 
