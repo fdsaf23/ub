@@ -68,7 +68,7 @@ async def areply(client, message):
     if not reply or not reply.from_user:
         return await message.edit("❌ Используй ответом на сообщение пользователя")
 
-    if len(message.text) < 2:
+    if len(message.command) < 2:
         return await message.edit("❌ Использование: .areply text")
 
     user_id = reply.from_user.id
@@ -96,7 +96,7 @@ async def dreply(client, message):
     await message.edit(f"✅ Автоответ с <b>{reply.from_user.first_name}</b> cнят", parse_mode = enums.ParseMode.HTML)
 
 @app.on_message(filters.me & filters.command("replies", prefixes=PREFIXES))
-async def replies(client, message):
+async def replies_array(client, message):
 
     if not replies:
         return await message.edit("📋 Cписок пуст.")
