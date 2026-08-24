@@ -224,7 +224,7 @@ async def onda(client, message):
     await message.delete()
 
 @app.on_message(filters.me & filters.command("roast", prefixes = PREFIXES))
-async def roast(client, message)
+async def roast(client, message):
     reply = message.reply_to_message
 
     if not reply or not reply.from_user:
