@@ -164,3 +164,29 @@ async def quote(client, message):
     )
 
     await message.delete()
+
+@app.on_message(filters.me & filtesr.command("spam", prefixes=PREFIXES))
+async def spam(client, message):
+    args = message.text.split(maxsplit=3)
+
+    count = int(args[1])
+    text = " ".join(args[2:])
+
+    if count < 1:
+        return await message.edit("Выбери число больше 0")
+
+    if len(args) < 3:
+        return await message.edit("❌ Используй: spam count text")
+
+    for _ in range(count):
+        await client.send_message(message.chat.id, text)
+        await asyncio.sleep(0.6)
+
+
+        
+
+
+
+
+
+
