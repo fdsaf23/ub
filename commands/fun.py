@@ -93,7 +93,7 @@ async def quote(client, message):
     username_text = f"@{user.username}" if user.username else user.first_name
 
     draw.text(
-        (text_x, avatar_y + avatar_size - 30),
+        (text_x, avatar_y + avatar_size - 38),
         username_text,
         font=font_username,
         fill=(210, 210, 210),
@@ -140,7 +140,7 @@ async def quote(client, message):
     message_y = id_bottom + (username_top - id_bottom - text_height) // 2
 
     draw.multiline_text(
-        (text_x, message_y + 15),
+        (text_x, message_y - 15),
         text,
         font=font_text,
         fill="white",
