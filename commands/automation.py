@@ -44,6 +44,8 @@ async def afk_reply(client, message):
 
     await message.reply(AFK_REASON, parse_mode = enums.ParseMode.HTML)
 
+    AFK_REPLY_SLEEP = now
+
 @app.on_message(filters.me & filters.command("unafk", prefixes = PREFIXES))
 async def unafk(client, message):
 
