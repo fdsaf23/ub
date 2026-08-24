@@ -37,5 +37,5 @@ async def afk_reply(client, message):
         return
 
     if AFK:
-        await message.reply(AFK_REASON)
         time.sleep(15)
+        await message.reply(AFK_REASON)
