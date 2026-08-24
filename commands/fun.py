@@ -48,7 +48,7 @@ async def quote(client, message):
   draw.text((640, 370), f"{user.id}", font = font_id, anchor = "mm", fill = "white")
   
   final_buffer = BytesIO()
-  bg.convert("RGB").save(final_buffer, "JPG", quality=85)
+  bg.convert("RGB").save(final_buffer, "JPEG", quality=85)
   final_buffer.seek(0)
 
   final_buffer.name = "quote.jpeg"
