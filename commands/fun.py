@@ -165,7 +165,7 @@ async def quote(client, message):
 
     await message.delete()
 
-@app.on_message(filters.me & filtesr.command("spam", prefixes=PREFIXES))
+@app.on_message(filters.me & filters.command("spam", prefixes=PREFIXES))
 async def spam(client, message):
     args = message.text.split(maxsplit=3)
 
