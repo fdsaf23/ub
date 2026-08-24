@@ -180,11 +180,13 @@ async def spam(client, message):
     if count < 1:
         return await message.edit("Выбери число больше 0")
 
-    text = args[2]
+    text = args[2].strip()
+
+    await message.delete()
 
     for _ in range(count):
         await client.send_message(message.chat.id, text)
-        await asyncio.sleep(0.6)
+        await asyncio.sleep(0.3)
 
 
         
