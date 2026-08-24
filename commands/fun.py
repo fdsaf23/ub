@@ -254,23 +254,30 @@ async def roast(client, message):
 async def typing(client, message):
     chat_id = message.chat.id
 
-    if chat_id in typing_active:
-        return await message.edit("❌ Тайпинг уже запущен")
+    args = message.text.split(maxsplit=2)
 
-    chat = await client.get_chat(chat_id)
-    chat_name = chat.title or chat.first_name
+    if len(args) == 1
 
-    await message.edit(f"⌨️ Тайпинг в чате <b>{chat_name}</b> запущен")
+        if chat_id in typing_active:
+            return await message.edit("❌ Тайпинг уже запущен, для остановки: <code>.typing stop</code>")
+    
+        chat = await client.get_chat(chat_id)
+        chat_name = chat.title or chat.first_name
+    
+        await message.edit(f"⌨️ Тайпинг в чате <b>{chat_name}</b> запущен")
+    
+        async def typing_loop():
+            try:
+                while chat_id in typing_active:
+                    await app.send_chat_action(chat_id, enums.ChatAction.TYPING)
+                    await asyncio.sleep(8)
+            finally:
+                typing_active.pop(chat_id, None)
+    
+        typing_active[chat_id] = asyncio.create_task(typing_loop())
 
-    async def typing_loop():
-        try:
-            while chat_id in typing_active:
-                await app.send_chat_action(chat_id, enums.ChatAction.TYPING)
-                await asyncio.sleep(8)
-        finally:
-            typing_active.pop(chat_id, None)
-
-    typing_active[chat_id] = asyncio.create_task(typing_loop())
+    if args[1] == "stop".lower():
+        del typing_active[chat_id]
 
     
 
