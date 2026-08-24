@@ -214,14 +214,15 @@ async def onda(client, message):
 Зеркала меня слепят, зови меня «onda andar»
 
 Я стою как thunderstorm, зови меня «onda andar»
-Зеркала меня слепят, зови меня «onda andar»
+Зеркала меня слепят, зови меня «onda andar»</blockquote>
     """
 
     await client.send_video(
             message.chat.id,
             video=url,
-            caption = text
-            supports_streaming=True
+            caption = text,
+            supports_streaming=True,
+            parse_mode = enums.ParseMode.HTML
         )
 
     await message.delete()
