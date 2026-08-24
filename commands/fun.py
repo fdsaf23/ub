@@ -319,7 +319,7 @@ async def bull_loop(client, message):
     if user_id in bull_active:
         phrase = random.choice(phrases)
             
-        await app.send_message(
+        await client.send_message(
             chat_id=message.chat.id,
             text=phrase,
-            reply_to_message_id=message.id
+            reply_to_message_id=message.id)
