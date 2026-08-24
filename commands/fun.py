@@ -6,6 +6,8 @@ import random
 from core import app
 from cfg import PREFIXES
 
+typing_active = {}
+
 
 font_text = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 48
@@ -247,4 +249,18 @@ async def roast(client, message):
     ]
 
     await message.edit(random.choice(roasts))
+
+@app.on_message(filters.me & filters.command("typing", prefixes = PREFIXES))
+async def typing(client, message):
+    chat_id = message.chat.id
+
+    if chat_id in typing_active:
+        return await message.edit("❌ Тайпинг уже запущен")
+
+    await message.edit(f"⌨️ Тайпинг в чате <b>{chat.title}</b>")
+
+    
+
+
+
 
