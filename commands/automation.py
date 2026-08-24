@@ -1,14 +1,7 @@
 from pyrogram import filters, enums
 from core import app
 from cfg import PREFIXES
-import time
-
-# .afk — включить AFK
-# .unafk — выключить AFK
-# .autoreply — автоответчик
-# .delreply — удалить автоответ
-# .replies — список автоответов
-# .autoreact — авто-реакции
+import time 
 
 replies = {}
 react = {}
@@ -32,7 +25,7 @@ async def afk(client, message):
 @app.on_message(filters.me & filters.command("unafk", prefixes = PREFIXES))
 async def unafk(client, message):
 
-    global AFK
+   global AFK
 
     if not AFK:
         return await message.edit("АФК не был включен")
@@ -102,11 +95,14 @@ async def add_react(client, message):
         return await message.edit("❌ Используй ответом на сообщение пользователя")
 
     if len(message.command) < 2:
-        return await message.edit("❌ Использование: .areply text")
+        return await message.edit("❌ Использование: .areact emoji")
 
     user_id = reply.from_user.id
 
     emoji = message.text.split(maxsplit=1)[1]
+
+    if len(emoji) > 1:
+        return message.edit("Используй эмоджи, например, '😂', '🤡'")
     
     react[user_id] = emoji
 
