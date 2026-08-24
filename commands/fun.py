@@ -83,7 +83,7 @@ async def quote(client, message):
 
     # ID — на уровне верхнего края аватарки
     draw.text(
-        (text_x, avatar_y),
+        (text_x, avatar_y - avatar_size),
         f"ID: {user.id}",
         font=font_id,
         fill="white",
