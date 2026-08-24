@@ -180,7 +180,7 @@ async def spam(client, message):
     if count < 1:
         return await message.edit("Выбери число больше 0")
 
-    text = args[2].strip()
+    text = " ".join(args[2:])
 
     await message.delete()
 
