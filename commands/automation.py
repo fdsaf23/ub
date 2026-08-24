@@ -101,10 +101,10 @@ async def add_react(client, message):
     if not reply or not reply.from_user:
         return await message.edit("❌ Используй ответом на сообщение пользователя")
 
-    user_id = reply.from_user.id
-
     if len(message.command) < 2:
         return await message.edit("❌ Использование: .areact emoji")
+
+    user_id = reply.from_user.id
 
     emoji = message.text.split(maxsplit=1)[1]
     
