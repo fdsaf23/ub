@@ -256,7 +256,7 @@ async def typing(client, message):
 
     args = message.text.split(maxsplit=2)
 
-    if len(args) > 1 and args[1].lower() == "stop":
+    if len(args) == 2 and args[1].lower() == "stop":
 
         if chat_id not in typing_active:
             return await message.edit("❌ Тайпинг не запущен")
@@ -266,9 +266,7 @@ async def typing(client, message):
 
         del typing_active[chat_id]
 
-        await message.edit(f"✅ Тайпинг в чате <b>{chat_name}</b> остановлен")
-
-        return
+        return await message.edit(f"✅ Тайпинг в чате <b>{chat_name}</b> остановлен")
 
     if chat_id in typing_active:
         return await message.edit("❌ Тайпинг уже запущен, для остановки: <code>.typing stop</code>")
