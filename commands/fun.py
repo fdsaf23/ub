@@ -256,15 +256,16 @@ async def typing(client, message):
 
     args = message.text.split(maxsplit=2)
 
-    if len(args) == 2 and args[1].lower() == "stop":
+    if len(args) > 2 and args[1].lower() == "stop":
+        task = typing_active.pop(chat_id, None)
 
-        if chat_id not in typing_active:
+        if not task:
             return await message.edit("❌ Тайпинг не запущен")
+
+        task.cancel()
 
         chat = await client.get_chat(chat_id)
         chat_name = chat.title or chat.first_name
-
-        del typing_active[chat_id]
 
         return await message.edit(f"✅ Тайпинг в чате <b>{chat_name}</b> остановлен")
 
