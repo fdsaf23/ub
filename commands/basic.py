@@ -126,7 +126,8 @@ async def set(client, message):
         
         elif field == "user":
             await client.set_username(value)
-            return await message.edit(f"Юзернейм изменен на <b>{value}</b>", parse_mode = enums.ParseMode.HTML)
+            username = value.strip("@")
+            return await message.edit(f"Юзернейм изменен на <b>{username}</b>", parse_mode = enums.ParseMode.HTML)
         
         elif field == "bio":
             await client.update_profile(bio=value)
