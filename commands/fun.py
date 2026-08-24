@@ -19,7 +19,7 @@ async def quote(client, message):
 
   reply = message.reply_to_message
 
-  if not reply and not reply.from_user:
+  if not reply or not reply.from_user:
     return await message.edit("❌ Используй реплеем")
 
   user = reply.from_user
@@ -27,11 +27,11 @@ async def quote(client, message):
 
   if user.photo:
     avatar = await client.download_media(user.photo.big_file_id, file_name = f"bg.jpeg")
-    return await message.edit("🖼 Загружаю аватар...")
+    await message.edit("🖼 Загружаю аватар...")
   else:
     return await message.edit("У пользователя нету аватарки")
 
-  raw_img = Image.new(avatar).convert("RGBA")
+  raw_img = Image.open(avatar).convert("RGBA")
 
   bg = raw_img.resize((1280, 720))
   bg = bg.filter(ImageFilter.BoxBlur(radius = 15))
@@ -39,17 +39,17 @@ async def quote(client, message):
 
   overlay = Image.new("RGBA", bg.size, (0, 0, 0, 160))
 
-  bg = Image.alpha_composite(bg)
+  bg = Image.alpha_composite(bg, overlay)
 
-  draw = ImageDraw.Draw(bg, overlay)
+  draw = ImageDraw.Draw(bg)
 
   draw.text((640, 350), f"{user.first_name}", font=font_name, anchor="mm", fill = "white")
   draw.text((640, 360), text, font = font_text, anchor="mm", fill = "white")
   draw.text((640, 370), f"{user.id}", font = font_id, anchor = "mm", fill = "white")
   
-  final_buffer = BytesIo()
+  final_buffer = BytesIO()
   bg.convert("RGB").save(final_buffer, "JPG", quality=85)
-  finall_buffer.seek(0)
+  final_buffer.seek(0)
 
   final_buffer.name = "quote.jpeg"
 
