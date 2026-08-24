@@ -256,7 +256,7 @@ async def typing(client, message):
 
     args = message.text.split(maxsplit=2)
 
-    if len(args) == 1
+    if len(args) == 1:
 
         if chat_id in typing_active:
             return await message.edit("❌ Тайпинг уже запущен, для остановки: <code>.typing stop</code>")
@@ -276,10 +276,17 @@ async def typing(client, message):
     
         typing_active[chat_id] = asyncio.create_task(typing_loop())
 
-    if args[1] == "stop".lower():
+    if args[1].lower() == "stop":
+
+        if chat_id not in typing_active:
+            return await message.edit("❌ Тайпинг не запущен")
+
+        chat = await client.get_chat(chat_id)
+        chat_name = chat.title or chat.first_name
+
         del typing_active[chat_id]
 
-    
+        await message.edit(f"✅ Тайпинг в чате <b>{chat_name}</b> остановлен")
 
 
 
