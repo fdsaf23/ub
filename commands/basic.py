@@ -30,6 +30,9 @@ async def help(client, message):
  • <code>areact</code> - автореакция
  • <code>lreact</code> - список автореакций
  • <code>dreact</code> - удалить автореакцию
+
+◻ Фановые:
+ • <code>quote</code> - генерация карточки
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
