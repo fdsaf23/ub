@@ -132,7 +132,7 @@ async def incoming_handler(client, message):
     if user_id in replies:
 
         await app.send_message(
-            chat_id = chat_id,
-            text = replies[user_id],
-            reply_to_message_id = message_id
-        )
+            chat_id=message.chat.id,
+            text=replies[user_id],
+            reply_to_message_id=message.id
+    )
