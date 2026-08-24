@@ -25,8 +25,8 @@ async def afk(client, message):
 @app.on_message(filters.me & filters.command("unafk", prefixes = PREFIXES))
 async def unafk(client, message):
 
-   global AFK
-
+    global AFK
+    
     if not AFK:
         return await message.edit("АФК не был включен")
     
