@@ -305,18 +305,18 @@ async def bull(client, message):
 
 @app.on_message(filters.incoming & filters.text)
 async def bull_loop(client, message):
-    user_id = message.from_user.id
-
     if not message.from_user:
         return
+        
+    user_id = message.from_user.id
 
-    if user_id not in bull.active:
+    if user_id not in bull_active:
         return
     
     with open("bull/shablon.txt", "r", encoding = "utf-8") as f:
         phrases = [line.strip() for line in f if line.strip()]
 
-    phrases = random.choise(phrases)
+    phrases = random.choiсe(phrases)
                 
     await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
     await asyncio.sleep(3.5)
