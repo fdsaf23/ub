@@ -134,7 +134,7 @@ async def dreact(client, message):
 async def list_react(client, message):
 
     if not react:
-        return message.edit("📋 Список пуст")
+        return await message.edit("📋 Список пуст")
 
     text = "📋 Список автореакций:\n"
 
