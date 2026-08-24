@@ -147,8 +147,7 @@ async def quote(client, message):
     final_buffer.seek(0)
     final_buffer.name = "quote.jpeg"
 
-    await client.send_photo(
-        message.chat.id,
+    await message.reply_photo(
         photo=final_buffer
     )
 
