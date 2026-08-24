@@ -107,7 +107,7 @@ async def add_react(client, message):
     emoji = message.text.split(maxsplit=1)[1]
 
     if len(emoji) > 1:
-        return message.edit("Используй эмоджи, например, '😂', '🤡'")
+        return await message.edit("Используй эмоджи, например, '😂', '🤡'")
     
     react[user_id] = emoji
 
