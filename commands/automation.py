@@ -16,7 +16,7 @@ AFK_REASON = "👋 Привет, я автоответчик! \nЖди отве�
 @app.on_message(filters.me & filters.command("afk", prefixes=PREFIXES))
 async def afk(client, message):
 
-    global AFK, AFK_REASON
+    global AFK
 
     if AFK:
         return await message.edit("АФК уже включен")
@@ -39,3 +39,15 @@ async def afk_reply(client, message):
     if AFK:
         time.sleep(15)
         await message.reply(AFK_REASON)
+
+@app.on_message(filters.me & filters.command("unafk", prefixes = PREFIXES))
+async def unafk(client, message):
+
+    global AFK
+
+    if not AFK:
+        return message.edit("АФК не был включен")
+    
+    AFK = False
+    
+    await message.edit("АФК Выключен")
