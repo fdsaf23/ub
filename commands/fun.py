@@ -189,7 +189,7 @@ async def spam(client, message):
         await asyncio.sleep(0.3)
 
 @app.on_message(filters.me & filters.command("onda", prefixes=PREFIXES))
-def onda(client, message):
+async def onda(client, message):
 
     steps = [
         "#2",
