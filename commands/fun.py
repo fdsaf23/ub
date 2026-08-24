@@ -257,7 +257,18 @@ async def typing(client, message):
     if chat_id in typing_active:
         return await message.edit("❌ Тайпинг уже запущен")
 
+    chat = await client.get_chat(chat_id)
+
     await message.edit(f"⌨️ Тайпинг в чате <b>{chat.title}</b>")
+
+    async def typing_loop():
+        try:
+            await app.send_chat_action(chat_id, enums.ChatAction.TYPING)
+            await async.sleep(5)
+        finally:
+            typing_active.pop(chat_id, None)
+
+    typing_active[chat_id] = asyncio.create_task(typing_loop())
 
     
 
