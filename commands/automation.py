@@ -69,8 +69,8 @@ async def dreply(client, message):
 
     user_id = reply.from_user.id
 
-    if user_id not in replies:
-        return await message.edit("❌ На пользователе нет автореплея")
+    if len(message.command) < 2:
+        return await message.edit("❌ Использование: .areact emoji")
 
     del replies[user_id]
 
