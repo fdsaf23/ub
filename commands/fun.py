@@ -83,7 +83,7 @@ async def quote(client, message):
 
   draw.text((800, 260), f"- {user.first_name}", font=font_name, anchor="mm", fill = "white")
   draw.multiline_text(
-    (850, 350),
+    (640, 360),
     text,
     font=font_text,
     anchor="mm",
