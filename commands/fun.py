@@ -233,7 +233,7 @@ async def roast(client, message):
     user = reply.from_user
     name = f"@{user.username}" if user.username else f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
 
-     roasts = [
+    roasts = [
         f"{name}, ты не тормоз — ты просто даёшь всем шанс тебя обогнать.",
         f"{name} настолько загадочный человек, что даже его мысли иногда не знают, куда идут.",
         f"{name} пишет так уверенно, будто проверял информацию в комментариях YouTube.",
@@ -248,4 +248,3 @@ async def roast(client, message):
 
     await message.edit(random.choice(roasts))
 
-    await message.delete()
