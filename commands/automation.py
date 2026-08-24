@@ -126,6 +126,4 @@ async def reply_handler(client, message):
     if user_id not in replies:
         return
 
-    await message.reply(
-        text = replies[user_id]
-    )
+    await message.reply(replies[user_id])
