@@ -136,7 +136,7 @@ async def list_react(client, message):
     if not react:
         return await message.edit("📋 Список пуст")
 
-    text = "📋 Список автореакций:\n"
+    text = "📋 Список автореакций:\n\n"
 
     for num, user_id in enumerate(react, 1):
         user = await client.get_users(user_id)
