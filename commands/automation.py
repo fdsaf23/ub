@@ -1,7 +1,8 @@
 from pyrogram import filters, enums
 from core import app
 from cfg import PREFIXES
-import time 
+import time
+import emoji
 
 replies = {}
 react = {}
@@ -104,14 +105,14 @@ async def add_react(client, message):
 
     user_id = reply.from_user.id
 
-    emoji = message.text.split(maxsplit=1)[1].strip()
+    reaction = message.text.split(maxsplit=1)[1].strip()
 
-    if len(emoji) > 1:
+    if len(emoji.emoji_list(reaction)) > 1:
         return await message.edit(
             "❌ Используй одно эмодзи, например 😂"
         )
     
-    react[user_id] = emoji
+    react[user_id] = reaction
 
     await message.edit(f"✅ Автореакция добавлена \n\nТаргет: <code>{reply.from_user.first_name}</code>\nРеакция: {emoji}")
 
