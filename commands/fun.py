@@ -7,7 +7,7 @@ from core import app
 from cfg import PREFIXES
 
 typing_active = {}
-
+bull_active = {}
 
 font_text = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 48
@@ -287,6 +287,19 @@ async def typing(client, message):
     
     typing_active[chat_id] = asyncio.create_task(typing_loop())
 
+@app.on_message(filters.me & filters.command('bull', prefixxes = PREFIXES))
+async def bull(client, message):
+    reply = message.reply_to_message
 
+    if not reply or not reply.from_user:
+        return await message.edit("❌ Используй реплеем")
+
+    user_id = reply.from_user.id
+
+    if user_id in bull_active:
+        return await message.edit("Пользователь уже добавлен")
+
+    async def bull_loop():
+        with open
 
 
