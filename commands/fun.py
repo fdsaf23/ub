@@ -188,7 +188,19 @@ async def spam(client, message):
         await client.send_message(message.chat.id, text)
         await asyncio.sleep(0.3)
 
+@app.on_message(filters.me & filters.command("onda", prefixes=PREFIXES))
+def onda(client, message):
 
+    steps = [
+        "#2",
+        "#20",
+        "#201",
+        "#2016"
+    ]
+
+    for step in steps:
+        await message.edit(step)
+        await asyncio.sleep(0.4)
         
 
 
