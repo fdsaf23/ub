@@ -113,7 +113,7 @@ async def add_react(client, message):
 
     await message.edit(f"✅ Автореакция добавлена \n\nТаргет: <code>{reply.from_user.first_name}</code>\nРеакция: {emoji}")
 
-@app.on_message(filters.me & filters.command("dreact"))
+@app.on_message(filters.me & filters.command("dreact", prefixes = PREFIXES))
 async def dreact(client, message):
     reply = message.reply_to_message
 
@@ -170,3 +170,10 @@ async def incoming_handler(client, message):
             text=replies[user_id],
             reply_to_message_id=message.id
     )
+
+    # =========================
+    # AUTOREACT
+    # =========================
+
+    if user_id in react:
+        await message.react(react[user_id])
