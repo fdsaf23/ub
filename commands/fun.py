@@ -303,7 +303,7 @@ async def bull(client, message):
 
     await message.edit("Пользователь добавлен")
 
-@app.on_message(filters.incoming & filters.text)
+@app.on_message(~filters.me & filters.incoming)
 async def bull_loop(client, message):
     if not message.from_user:
         return
