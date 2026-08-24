@@ -303,7 +303,7 @@ async def bull(client, message):
 
     await message.edit("Пользователь добавлен")
 
-@app.on_message(~filters.me & filters.incoming)
+@app.on_message(~filters.me & filters.incoming, group = 1)
 async def bull_loop(client, message):
     if not message.from_user:
         return
@@ -329,4 +329,4 @@ async def bull_loop(client, message):
         chat_id=message.chat.id,
         text=phrase,
         reply_to_message_id=message.id
-    )
+    
