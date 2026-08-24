@@ -33,6 +33,7 @@ async def help(client, message):
 
 ◻ Фановые:
  • <code>quote</code> - генерация карточки
+ • <code>spam</code> - спам
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
