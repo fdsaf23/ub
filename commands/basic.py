@@ -20,6 +20,10 @@ async def help(client, message):
  • <code>set</code> - изменить параметр профиля
  • <code>backup</code> - бэкап профиля
  • <code>restore</code> - вернуть профиль бэкапа
+
+◻ Автоматизация:
+ • <code>afk</code> - афк режим
+ • <code>unafk</code> - выключить афк
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
