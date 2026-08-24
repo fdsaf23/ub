@@ -11,6 +11,7 @@ import time
 # .autoreact — авто-реакции
 
 replies = {}
+react = {}
 
 AFK = False
 REPLY_SLEEP = 0
@@ -79,7 +80,7 @@ async def dreply(client, message):
 async def replies_array(client, message):
 
     if not replies:
-        return await message.edit("📋 Cписок пуст.")
+        return await message.edit("📋 Cписок пуст")
 
     text = "📋 Список автоответов:\n"
 
@@ -94,6 +95,25 @@ async def replies_array(client, message):
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
+
+@app.on_message(filters.me & filters.command("areact", prefixes = PREFIXES))
+async def add_react(client, message):
+
+    reply = message.reply_to_message
+
+    if not reply or not reply.from_user:
+        return await message.edit("❌ Используй ответом на сообщение пользователя")
+
+    user_id = reply.from_user.id
+
+    if user_id not in replies:
+        return await message.edit("❌ На пользователе нет автореплея")
+
+    emoji = message.text.split(maxsplit=1)[1]
+    
+    react[user_id] = emoji
+
+    await message.edit(f"✅ Автореакция добавлена \n\nТаргет: <code>{reply.from_user.first_name}</code>\nРеакция: {emoji}")
 
 @app.on_message(~filters.me & filters.incoming)
 async def incoming_handler(client, message):
