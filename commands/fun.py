@@ -308,6 +308,8 @@ async def bull_loop(client, message):
     if not message.from_user:
         return
 
+    chat_id = message.chat.id
+
     user_id = message.from_user.id
 
     if user_id not in bull_active:
@@ -325,8 +327,8 @@ async def bull_loop(client, message):
 
     phrase = random.choice(phrases)
 
-    await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
-    await asyncio.sleep(2.5)
+    await client.send_chat_action(chat_id, enums.ChatAction.TYPING)
+        await asyncio.sleep(12)
     await client.send_message(
         chat_id=message.chat.id,
         text=phrase,
