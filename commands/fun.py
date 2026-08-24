@@ -23,7 +23,6 @@ async def quote(client, message):
     return await message.edit("❌ Используй реплеем")
 
   user = reply.from_user
-  text = textwrap.fill(reply.text, width=25)
 
   if user.photo:
     avatar = await client.download_media(user.photo.big_file_id, file_name = f"bg.jpeg")
@@ -82,8 +81,50 @@ async def quote(client, message):
     )
 
   draw.text((800, 260), f"- {user.first_name}", font=font_name, anchor="mm", fill = "white")
-  draw.multiline_text(
-    (430, 350),
+  draw.text((660, 460), f"ID: {user.id}", font = font_id, anchor = "mm", fill = "white")
+
+  # Максимальная ширина текста
+max_width = 750
+
+# Разбиваем текст по словам
+words = reply.text.split()
+lines = []
+current_line = ""
+
+for word in words:
+    test_line = current_line + (" " if current_line else "") + word
+
+    bbox = draw.textbbox((0, 0), test_line, font=font_text)
+    text_width = bbox[2] - bbox[0]
+
+    if text_width <= max_width:
+        current_line = test_line
+    else:
+        if current_line:
+            lines.append(current_line)
+        current_line = word
+
+if current_line:
+    lines.append(current_line)
+
+text = "\n".join(lines)
+
+# Получаем высоту всего текста
+bbox = draw.multiline_textbbox(
+    (0, 0),
+    text,
+    font=font_text,
+    spacing=5
+)
+
+text_height = bbox[3] - bbox[1]
+
+# Рисуем текст по центру доступной области
+text_x = 430
+text_y = 350
+
+draw.multiline_text(
+    (text_x, text_y),
     text,
     font=font_text,
     anchor="lm",
@@ -91,7 +132,6 @@ async def quote(client, message):
     spacing=5,
     fill="white"
 )
-  draw.text((660, 460), f"ID: {user.id}", font = font_id, anchor = "mm", fill = "white")
   
   final_buffer = BytesIO()
   bg.convert("RGB").save(final_buffer, "JPEG", quality=85)
