@@ -2,14 +2,17 @@ import os
 import asyncio
 from io import BytesIO
 from datetime import datetime
-
+import textwrap
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from pyrogram import filters, enums
 
 from core import app
 from cfg import PREFIXES
 
-font = "fonts/FredokaOneCyrillic-Regular.ttf"
+font_name = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 50)
+font_text = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 65)
+font_id = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 40)
+font_time = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 25)
 
 @app.on_message(filters.me & filters.command("quote", prefixes = PREFIXES))
 async def quote(client, message):
@@ -23,4 +26,33 @@ async def quote(client, message):
   text = textwrap.fill(target.text, width = 50)
 
   if user.photo:
-    avatar = await client.download_media()
+    avatar = await client.download_media(user.photo.big_file_id, file_name = f"bg.jpeg")
+    return await message.edit("🖼 Загружаю аватар...")
+  else:
+    return await message.edit("У пользователя нету аватарки")
+
+  raw_img = Image.new(avatar).convert("RGBA")
+
+  bg = raw_img.resize((1280, 720))
+  bg = bg.filter(ImageFilter.BoxBlur(radius = 15))
+  bg = bg.convert("RGBA")
+
+  overlay = Image.new("RGBA", bg.size, (0, 0, 0, 160))
+
+  bg = Image.alpha_composite(bg)
+
+  draw = ImageDraw.Draw(bg, overlay)
+
+  draw.text((640, 350), f"{user.first_name}", font=font_name, anchor="mm", fill = "white")
+  draw.text((640, 360), text, font = font_text, anchor="mm", fill = "white")
+  draw.text((640, 370), f"{user.id}", font = font_id, anchor = "mm", fill = "white")
+  
+  final_buffer = BytesIo()
+  bg.convert("RGB").save(final_buffer, "JPG", quality=85)
+  finall_buffer.seek(0)
+
+  final_buffer.name = "quote.jpeg"
+
+  client.send_photo(message.chat.id, photo=final_buffer)
+
+  message.delete()
