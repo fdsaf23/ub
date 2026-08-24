@@ -46,7 +46,7 @@ async def unafk(client, message):
     global AFK
 
     if not AFK:
-        return message.edit("АФК не был включен")
+        return await message.edit("АФК не был включен")
     
     AFK = False
     
