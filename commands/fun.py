@@ -7,7 +7,7 @@ from core import app
 from cfg import PREFIXES
 
 typing_active = {}
-bull_active = {}
+bull_active = set()
 
 font_text = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 48
@@ -299,21 +299,27 @@ async def bull(client, message):
     if user_id in bull_active:
         return await message.edit("Пользователь уже добавлен")
 
+    bull_active.add(user_id)
+
     await message.edit("Пользователь добавлен")
 
-    async def bull_loop():
-        with open("bull/shablon.txt", "r", encoding = "utf-8") as f:
-            phrases = [line.strip() for line in f if line.strip()]
-        try:
-            if user_id in bull_active:
-                phrases = random.choise(phrases)
-                
-                await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
-                await asyncio.sleep(3.5)
-                await message.reply_text(phrases)
-        finally:
-            bull_active.pop(user_id, None)
+@app.on_message(filter.incoming & filter.text)
+async def bull_loop(client, message):
+    user_id = message.from_user.id
 
-    bull_active[user_id] = asyncio.create_task(bull_loop())
+    if not message.from_user:
+        return
+
+    if user_id not in bull.active:
+        return
+    
+    with open("bull/shablon.txt", "r", encoding = "utf-8") as f:
+        phrases = [line.strip() for line in f if line.strip()]
+
+    phrases = random.choise(phrases)
+                
+    await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
+    await asyncio.sleep(3.5)
+    await message.reply_text(phrases)
 
 
