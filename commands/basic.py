@@ -49,7 +49,7 @@ async def info(client, message):
 
     username = f"@{user.username}" if user.username else "Нету"
     last_name = escape(user.last_name) if user.last_name else "Нету"
-    bio = escape(user.bio) if user.bio else "Нету"
+    bio = user.bio if user.bio else "Нету"
     first_name = escape(user.first_name)
 
     text = f"""
