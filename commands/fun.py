@@ -169,14 +169,18 @@ async def quote(client, message):
 async def spam(client, message):
     args = message.text.split(maxsplit=3)
 
-    count = int(args[1])
-    text = " ".join(args[2:])
+    if len(args) < 3:
+        return await message.edit("❌ Используй: spam count text")
+        
+    try:
+        count = int(args[1])
+    except:
+        return await message.edit("❌ Введи кол-во сообщений")
 
     if count < 1:
         return await message.edit("Выбери число больше 0")
 
-    if len(args) < 3:
-        return await message.edit("❌ Используй: spam count text")
+    text = args[2]
 
     for _ in range(count):
         await client.send_message(message.chat.id, text)
