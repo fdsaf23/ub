@@ -126,15 +126,8 @@ async def reply(client, message):
     if user_id not in replies:
         return
 
-    now = time.time()
-
-    if now - REPLY_SLEEP < 15:
-        return
-
     await client.send_message(
         chat = message.chat.id,
         text = replies[user_id],
         reply_to_message_id = message.id
     )
-
-    REPLY_SLEEP[user_id] = now
