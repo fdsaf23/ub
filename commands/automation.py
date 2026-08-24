@@ -78,7 +78,7 @@ async def replies_array(client, message):
     if not replies:
         return await message.edit("📋 Cписок пуст")
 
-    text = "📋 Список автоответов:\n"
+    text = "📋 Список автоответов:\n\n"
 
     for number, user_id in enumerate(replies, 1):
 
