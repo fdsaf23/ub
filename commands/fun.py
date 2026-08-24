@@ -246,6 +246,6 @@ async def roast(client, message):
         f"{name}, если бы уверенность была интернетом, у тебя был бы безлимит."
     ]
 
-    await message.edit(random.choice(roast))
+    await message.edit(random.choice(roasts))
 
     await message.delete()
