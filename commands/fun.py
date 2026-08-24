@@ -43,9 +43,9 @@ async def quote(client, message):
 
   draw = ImageDraw.Draw(bg)
 
-  draw.text((640, 300), f"{user.first_name}", font=font_name, anchor="mm", fill = "white")
+  draw.text((7000, 260), f"- {user.first_name}", font=font_name, anchor="mm", fill = "white")
   draw.text((640, 360), text, font = font_text, anchor="mm", fill = "white")
-  draw.text((640, 420), f"{user.id}", font = font_id, anchor = "mm", fill = "white")
+  draw.text((640, 460), f"ID: {user.id}", font = font_id, anchor = "mm", fill = "white")
   
   final_buffer = BytesIO()
   bg.convert("RGB").save(final_buffer, "JPEG", quality=85)
