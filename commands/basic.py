@@ -45,7 +45,7 @@ async def info(client, message):
     if reply:
         user = reply.from_user
 
-    user = await client.get_users(user.id)
+    user = await client.get_chat(user.id)
 
     username = f"@{user.username}" if user.username else "Нету"
     last_name = escape(user.last_name) if user.last_name else "Нету"
