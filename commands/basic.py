@@ -24,6 +24,9 @@ async def help(client, message):
 ◻ Автоматизация:
  • <code>afk</code> - афк режим
  • <code>unafk</code> - выключить афк
+ • <code>areply</code> - автоответ
+ • <code>replies</code> - список автоответов
+ • <code>dreply</code> - удалить автоответ
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
