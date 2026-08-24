@@ -268,6 +268,8 @@ async def typing(client, message):
 
         await message.edit(f"✅ Тайпинг в чате <b>{chat_name}</b> остановлен")
 
+        return
+
     if chat_id in typing_active:
         return await message.edit("❌ Тайпинг уже запущен, для остановки: <code>.typing stop</code>")
     
