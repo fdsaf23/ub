@@ -32,6 +32,7 @@ async def afk_reply(client, message):
 
     if message.from_user and message.from_user.is_bot:
         return
-    
-    await message.reply(AFK_REASON)
-    await asyncio.sleep(10)
+
+    if AFK:
+        await message.reply(AFK_REASON)
+        time.sleep(15)
