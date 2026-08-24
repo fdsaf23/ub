@@ -23,7 +23,7 @@ async def quote(client, message):
     return await message.edit("❌ Используй реплеем")
 
   user = reply.from_user
-  text = textwrap.fill(target.text, width = 50)
+  text = textwrap.fill(user.text, width = 50)
 
   if user.photo:
     avatar = await client.download_media(user.photo.big_file_id, file_name = f"bg.jpeg")
