@@ -1,10 +1,8 @@
 from io import BytesIO
-
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from pyrogram import filters, enums
-
 import asyncio
-
+import random
 from core import app
 from cfg import PREFIXES
 
@@ -225,8 +223,29 @@ async def onda(client, message):
 
     await message.delete()
 
+@app.on_message(filters.me & filters.command("roast", prefixes = PREFIXES))
+async def roast(client, message)
+    reply = message.reply_to_message
 
+    if not reply or not reply.from_user:
+        return await message.edit("❌ Используй на ответ пользователя")
 
+    user = reply.from_user
+    name = f"@{user.username}" if user.username else f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
 
+     roasts = [
+        f"{name}, ты не тормоз — ты просто даёшь всем шанс тебя обогнать.",
+        f"{name} настолько загадочный человек, что даже его мысли иногда не знают, куда идут.",
+        f"{name} пишет так уверенно, будто проверял информацию в комментариях YouTube.",
+        f"У {name} такой вайб, будто он зашёл на минутку и случайно стал легендой чата.",
+        f"{name} — причина, по которой кнопка «редактировать сообщение» вообще существует.",
+        f"{name}, твой план был хорошим. Жаль, что он не пережил встречу с реальностью.",
+        f"{name} выглядит как человек, который говорит «я всё понял», а потом спрашивает ещё раз.",
+        f"{name}, ты не опоздал — ты просто появился в своём часовом поясе.",
+        f"{name} настолько уникален, что ошибки рядом с ним начинают выглядеть как стиль.",
+        f"{name}, если бы уверенность была интернетом, у тебя был бы безлимит."
+    ]
 
+    await message.edit(random.choice(roast))
 
+    await message.delete()
