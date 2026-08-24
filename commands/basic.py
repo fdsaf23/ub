@@ -12,13 +12,14 @@ async def help(client, message):
     text = """
 <b>Все команды бота</b>
 
-<code>help</code> - список команд
-<code>ping</code> - пинг
-<code>info</code> - информация пользователя
-<code>cinfo</code> - инфомация о чате
-<code>set</code> - изменить параметр профиля
-<code>backup</code> - бэкап профиля
-<code>restore</code> - вернуть профиль бэкапа
+◻ Базовые:
+ • <code>help</code> - список команд
+ • <code>ping</code> - пинг
+ • <code>info</code> - информация пользователя
+ • <code>cinfo</code> - инфомация о чате
+ • <code>set</code> - изменить параметр профиля
+ • <code>backup</code> - бэкап профиля
+ • <code>restore</code> - вернуть профиль бэкапа
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
@@ -48,8 +49,8 @@ async def info(client, message):
 
     username = f"@{user.username}" if user.username else "Нету"
     last_name = escape(user.last_name) if user.last_name else "Нету"
-    bio = escape(user.bio) or "Нету")
-    first_name = escape(user.first_name) if user.first_name else "Нету"
+    bio = escape(user.bio) if user.bio else "Нету"
+    first_name = escape(user.first_name)
 
     text = f"""
 👤 Информация о <b>{first_name}</b>
