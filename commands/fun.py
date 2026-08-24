@@ -256,7 +256,7 @@ async def typing(client, message):
 
     args = message.text.split(maxsplit=2)
 
-    if len(args) > 2 and args[1].lower() == "stop":
+    if len(args) > 1 and args[1].lower() == "stop":
         task = typing_active.pop(chat_id, None)
 
         if not task:
@@ -280,7 +280,7 @@ async def typing(client, message):
     async def typing_loop():
         try:
             while chat_id in typing_active:
-                await app.send_chat_action(chat_id, enums.ChatAction.TYPING)
+                await client.send_chat_action(chat_id, enums.ChatAction.TYPING)
                 await asyncio.sleep(8)
         finally:
             typing_active.pop(chat_id, None)
