@@ -91,7 +91,6 @@ async def quote(client, message):
         username_text,
         font=font_username,
         fill=(210, 210, 210),
-        anchor="lb"
     )
 
     # Перенос сообщения по словам
@@ -139,7 +138,6 @@ async def quote(client, message):
         text,
         font=font_text,
         fill="white",
-        anchor="lt",
         align="left",
         spacing=8
     )
