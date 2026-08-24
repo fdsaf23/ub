@@ -53,6 +53,6 @@ async def quote(client, message):
 
   final_buffer.name = "quote.jpeg"
 
-  client.send_photo(message.chat.id, photo=final_buffer)
+  await client.send_photo(message.chat.id, photo=final_buffer)
 
-  message.delete()
+  await message.delete()
