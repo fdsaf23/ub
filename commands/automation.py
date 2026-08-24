@@ -102,7 +102,7 @@ async def add_react(client, message):
         return await message.edit("❌ Используй ответом на сообщение пользователя")
 
     if len(message.command) < 2:
-        return await message.edit("❌ Использование: .areact emoji")
+        return await message.edit("❌ Использование: .areply text")
 
     user_id = reply.from_user.id
 
