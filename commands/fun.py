@@ -23,7 +23,7 @@ async def quote(client, message):
     return await message.edit("❌ Используй реплеем")
 
   user = reply.from_user
-  text = textwrap.fill(reply.text, width = 150)
+  text = textwrap.fill(reply.text, width=28)
 
   if user.photo:
     avatar = await client.download_media(user.photo.big_file_id, file_name = f"bg.jpeg")
@@ -42,6 +42,44 @@ async def quote(client, message):
   bg = Image.alpha_composite(bg, overlay)
 
   draw = ImageDraw.Draw(bg)
+
+  avatar_size = 260
+
+    # Копируем оригинальную аватарку
+  avatar_img = raw_img.copy()
+
+    # Делаем квадрат
+  avatar_img = avatar_img.resize(
+        (avatar_size, avatar_size)
+    )
+
+    # Маска для скругления
+  mask = Image.new(
+        "L",
+        (avatar_size, avatar_size),
+        0
+    )
+
+  mask_draw = ImageDraw.Draw(mask)
+
+  mask_draw.rounded_rectangle(
+        (0, 0, avatar_size, avatar_size),
+        radius=40,
+        fill=255
+    )
+
+    # Применяем маску
+  avatar_img.putalpha(mask)
+
+    # Координаты аватарки
+  avatar_x = 100
+  avatar_y = (720 - avatar_size) // 2
+
+    # Накладываем на фон
+  bg.alpha_composite(
+        avatar_img,
+        (avatar_x, avatar_y)
+    )
 
   draw.text((800, 260), f"- {user.first_name}", font=font_name, anchor="mm", fill = "white")
   draw.text((640, 360), text, font = font_text, anchor="mm", fill = "white")
