@@ -1,7 +1,7 @@
 from io import BytesIO
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
-from pyrogram import filters
+from pyrogram import filters, enums
 
 import asyncio
 
