@@ -1,347 +1,231 @@
 import os
-import textwrap
-from datetime import datetime
+import asyncio
 from io import BytesIO
-import PIL
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageStat
+from datetime import datetime
 
-from pyrogram import filters
-from pyrogram.enums import ParseMode
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from pyrogram import filters, enums
 
 from core import app
 from cfg import PREFIXES
 
 
-WIDTH = 1200
-HEIGHT = 675
-
-OUTPUT_DIR = "temp"
+W, H = 1200, 675
 
 
-def get_font(size, bold=False):
-    fonts = [
-        "C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+def font(size, bold=False):
+    path = (
+        "C:/Windows/Fonts/arialbd.ttf"
         if bold else
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-    ]
+        "C:/Windows/Fonts/arial.ttf"
+    )
 
-    for font_path in fonts:
-        if os.path.exists(font_path):
-            return ImageFont.truetype(font_path, size)
+    if os.path.exists(path):
+        return ImageFont.truetype(path, size)
 
     return ImageFont.load_default()
 
 
-def rounded_image(image, size, radius):
-    image = image.convert("RGBA")
-    image.thumbnail(size)
+def round_avatar(img, size=230):
+    img = img.convert("RGBA")
+    img.thumbnail((size, size))
 
-    avatar = Image.new("RGBA", size, (0, 0, 0, 0))
+    result = Image.new("RGBA", (size, size))
+    x = (size - img.width) // 2
+    y = (size - img.height) // 2
+    result.paste(img, (x, y))
 
-    x = (size[0] - image.width) // 2
-    y = (size[1] - image.height) // 2
-
-    avatar.paste(image, (x, y))
-
-    mask = Image.new("L", size, 0)
-    mask_draw = ImageDraw.Draw(mask)
-
-    mask_draw.rounded_rectangle(
-        (0, 0, size[0], size[1]),
-        radius=radius,
+    mask = Image.new("L", (size, size))
+    ImageDraw.Draw(mask).rounded_rectangle(
+        (0, 0, size, size),
+        radius=35,
         fill=255
     )
 
-    avatar.putalpha(mask)
-
-    return avatar
-
-
-def get_average_color(image):
-    image = image.convert("RGB")
-    image = image.resize((1, 1))
-
-    return image.getpixel((0, 0))
+    result.putalpha(mask)
+    return result
 
 
-def draw_gradient(background, color):
-    gradient = Image.new("RGBA", (WIDTH, HEIGHT))
-
-    pixels = gradient.load()
-
-    r, g, b = color
-
-    for x in range(WIDTH):
-        progress = x / WIDTH
-
-        alpha = int(210 * (1 - progress))
-
-        for y in range(HEIGHT):
-            pixels[x, y] = (r, g, b, alpha)
-
-    background.alpha_composite(gradient)
-
-
-def wrap_text(draw, text, font, max_width):
+def wrap(draw, text, font_obj, width):
     words = text.split()
-    lines = []
-    current_line = ""
+    lines, line = [], ""
 
     for word in words:
+        test = f"{line} {word}".strip()
 
-        test_line = (
-            f"{current_line} {word}".strip()
-        )
-
-        bbox = draw.textbbox(
-            (0, 0),
-            test_line,
-            font=font
-        )
-
-        line_width = bbox[2] - bbox[0]
-
-        if line_width <= max_width:
-            current_line = test_line
+        if draw.textlength(test, font=font_obj) <= width:
+            line = test
         else:
+            lines.append(line)
+            line = word
 
-            if current_line:
-                lines.append(current_line)
-
-            current_line = word
-
-    if current_line:
-        lines.append(current_line)
+    if line:
+        lines.append(line)
 
     return lines
 
 
-async def create_quote(client, reply):
+@app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
+async def quote(client, message):
+
+    reply = message.reply_to_message
+
+    if not reply or not reply.from_user:
+        return await message.edit(
+            "❌ Ответь на сообщение пользователя"
+        )
 
     user = reply.from_user
 
-    # -------------------------
-    # АВАТАРКА
-    # -------------------------
-
-    avatar = None
+    await message.edit("📥 Получаю данные...")
+    await asyncio.sleep(0.3)
 
     try:
-        avatar_file = await client.download_media(
-            user.photo.big_file_id,
-            in_memory=True
+        # Аватарка
+        await message.edit("🖼 Загружаю аватар...")
+
+        if user.photo:
+            photo = await client.download_media(
+                user.photo.big_file_id,
+                in_memory=True
+            )
+            avatar = Image.open(
+                BytesIO(photo.getvalue())
+            ).convert("RGB")
+        else:
+            avatar = Image.new("RGB", (500, 500), (40, 40, 40))
+
+        await asyncio.sleep(0.3)
+
+        # Фон
+        await message.edit("🎨 Создаю фон...")
+
+        bg = avatar.resize((W, H)).filter(
+            ImageFilter.GaussianBlur(35)
+        ).convert("RGBA")
+
+        # Средний цвет аватарки
+        color = avatar.resize((1, 1)).getpixel((0, 0))
+
+        # Градиент слева
+        gradient = Image.new("RGBA", (W, H))
+
+        for x in range(W):
+            alpha = int(180 * (1 - x / W))
+
+            for y in range(H):
+                gradient.putpixel(
+                    (x, y),
+                    (*color, alpha)
+                )
+
+        bg.alpha_composite(gradient)
+
+        # Затемнение
+        bg.alpha_composite(
+            Image.new(
+                "RGBA",
+                (W, H),
+                (0, 0, 0, 100)
+            )
         )
 
-        avatar = Image.open(
-            BytesIO(avatar_file.getvalue())
-        ).convert("RGB")
+        await asyncio.sleep(0.3)
 
-    except Exception:
-        avatar = Image.new(
-            "RGB",
-            (500, 500),
-            (40, 40, 40)
+        # Карточка
+        await message.edit("✨ Создаю quote...")
+
+        draw = ImageDraw.Draw(bg)
+
+        name_font = font(45, True)
+        text_font = font(32)
+        small_font = font(22)
+
+        # Аватарка
+        ava = round_avatar(avatar)
+
+        bg.alpha_composite(
+            ava,
+            (110, (H - 230) // 2)
         )
 
-    # -------------------------
-    # ФОН ИЗ АВАТАРКИ
-    # -------------------------
+        # Имя
+        name = user.first_name or "Unknown"
 
-    background = avatar.copy()
+        if user.last_name:
+            name += f" {user.last_name}"
 
-    background = background.resize(
-        (WIDTH, HEIGHT)
-    )
-
-    background = background.filter(
-        ImageFilter.GaussianBlur(35)
-    )
-
-    background = background.convert("RGBA")
-
-    # Затемняем фон
-    dark_overlay = Image.new(
-        "RGBA",
-        (WIDTH, HEIGHT),
-        (0, 0, 0, 120)
-    )
-
-    background.alpha_composite(dark_overlay)
-
-    # -------------------------
-    # ГРАДИЕНТ С ЦВЕТА АВАТАРКИ
-    # -------------------------
-
-    average_color = get_average_color(avatar)
-
-    draw_gradient(
-        background,
-        average_color
-    )
-
-    # -------------------------
-    # НИЖНЯЯ ТЁМНАЯ ПОДЛОЖКА
-    # -------------------------
-
-    overlay = Image.new(
-        "RGBA",
-        (WIDTH, HEIGHT),
-        (0, 0, 0, 0)
-    )
-
-    overlay_draw = ImageDraw.Draw(overlay)
-
-    overlay_draw.rounded_rectangle(
-        (35, 35, WIDTH - 35, HEIGHT - 35),
-        radius=35,
-        fill=(15, 15, 20, 110)
-    )
-
-    background.alpha_composite(overlay)
-
-    # -------------------------
-    # РИСОВАНИЕ
-    # -------------------------
-
-    draw = ImageDraw.Draw(background)
-
-    # Шрифты
-    name_font = get_font(48, bold=True)
-    text_font = get_font(35)
-    id_font = get_font(23)
-    time_font = get_font(25)
-
-    # -------------------------
-    # АВАТАРКА
-    # -------------------------
-
-    avatar_size = (230, 230)
-
-    avatar_card = rounded_image(
-        avatar,
-        avatar_size,
-        32
-    )
-
-    avatar_x = 110
-    avatar_y = (HEIGHT - avatar_size[1]) // 2
-
-    background.alpha_composite(
-        avatar_card,
-        (avatar_x, avatar_y)
-    )
-
-    # -------------------------
-    # ИМЯ
-    # -------------------------
-
-    name = user.first_name or "Unknown"
-
-    if user.last_name:
-        name += f" {user.last_name}"
-
-    text_x = 390
-    name_y = 175
-
-    draw.text(
-        (text_x, name_y),
-        name,
-        font=name_font,
-        fill="white"
-    )
-
-    # -------------------------
-    # ТЕКСТ СООБЩЕНИЯ
-    # -------------------------
-
-    message_text = (
-        reply.text
-        or reply.caption
-        or "Сообщение без текста"
-    )
-
-    lines = wrap_text(
-        draw,
-        message_text,
-        text_font,
-        680
-    )
-
-    quote_y = 255
-
-    # Максимум 5 строк
-    if len(lines) > 5:
-        lines = lines[:5]
-
-        lines[-1] += "..."
-
-    for line in lines:
+        x = 390
 
         draw.text(
-            (text_x, quote_y),
-            line,
-            font=text_font,
-            fill=(235, 235, 235)
+            (x, 160),
+            name,
+            font=name_font,
+            fill="white"
         )
 
-        quote_y += 48
+        # Текст
+        text = reply.text or reply.caption or "Без текста"
 
-    # -------------------------
-    # ID ПОЛЬЗОВАТЕЛЯ
-    # -------------------------
+        lines = wrap(
+            draw,
+            text,
+            text_font,
+            700
+        )[:5]
 
-    id_text = f"ID: {user.id}"
+        y = 240
 
-    draw.text(
-        (text_x, HEIGHT - 125),
-        id_text,
-        font=id_font,
-        fill=(190, 190, 190)
-    )
+        for line in lines:
+            draw.text(
+                (x, y),
+                line,
+                font=text_font,
+                fill=(230, 230, 230)
+            )
+            y += 45
 
-    # -------------------------
-    # ЛОКАЛЬНОЕ ВРЕМЯ
-    # -------------------------
+        # ID
+        draw.text(
+            (x, H - 110),
+            f"ID: {user.id}",
+            font=small_font,
+            fill=(180, 180, 180)
+        )
 
-    current_time = datetime.now().strftime("%H:%M")
+        # Время
+        current_time = datetime.now().strftime("%H:%M")
 
-    time_bbox = draw.textbbox(
-        (0, 0),
-        current_time,
-        font=time_font
-    )
+        time_width = draw.textlength(
+            current_time,
+            font=small_font
+        )
 
-    time_width = (
-        time_bbox[2] - time_bbox[0]
-    )
+        draw.text(
+            (W - time_width - 60, H - 70),
+            current_time,
+            font=small_font,
+            fill="white"
+        )
 
-    draw.text(
-        (
-            WIDTH - time_width - 80,
-            HEIGHT - 90
-        ),
-        current_time,
-        font=time_font,
-        fill=(220, 220, 220)
-    )
+        # Сохраняем
+        os.makedirs("temp", exist_ok=True)
 
-    # -------------------------
-    # СОХРАНЕНИЕ
-    # -------------------------
+        path = f"temp/quote_{user.id}.jpg"
 
-    os.makedirs(
-        OUTPUT_DIR,
-        exist_ok=True
-    )
+        bg.convert("RGB").save(path, quality=95)
 
-    file_path = (
-        f"{OUTPUT_DIR}/quote_{user.id}_{reply.id}.png"
-    )
+        await message.edit("📤 Отправляю...")
 
-    background.convert("RGB").save(
-        file_path,
-        quality=95
-    )
+        await message.reply_photo(path)
 
-    return file_path
+        await message.delete()
+
+        os.remove(path)
+
+    except Exception as e:
+
+        await message.edit(
+            f"❌ Ошибка: <code>{e}</code>",
+            parse_mode=enums.ParseMode.HTML
+        )
