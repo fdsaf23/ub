@@ -287,7 +287,7 @@ async def typing(client, message):
     
     typing_active[chat_id] = asyncio.create_task(typing_loop())
 
-@app.on_message(filters.me & filters.command('bull', prefixxes = PREFIXES))
+@app.on_message(filters.me & filters.command('bull', prefixes = PREFIXES))
 async def bull(client, message):
     reply = message.reply_to_message
 
