@@ -27,6 +27,9 @@ async def help(client, message):
  • <code>areply</code> - автоответ
  • <code>replies</code> - список автоответов
  • <code>dreply</code> - удалить автоответ
+ • <code>areact</code> - автореакция
+ • <code>lreact</code> - список автореакций
+ • <code>dreact</code> - удалить автореакцию
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
