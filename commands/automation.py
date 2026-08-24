@@ -137,4 +137,4 @@ async def reply(client, message):
         reply_to_message_id = message.id
     )
 
-    REPLY_SLEEP = now
+    REPLY_SLEEP[user_id] = now
