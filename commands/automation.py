@@ -69,9 +69,6 @@ async def dreply(client, message):
 
     user_id = reply.from_user.id
 
-    if len(message.command) < 2:
-        return await message.edit("❌ Использование: .areact emoji")
-
     del replies[user_id]
 
     await message.edit(f"✅ Автоответ с <b>{reply.from_user.first_name}</b> cнят", parse_mode = enums.ParseMode.HTML)
@@ -106,8 +103,8 @@ async def add_react(client, message):
 
     user_id = reply.from_user.id
 
-    if user_id not in replies:
-        return await message.edit("❌ На пользователе нет автореплея")
+    if len(message.command) < 2:
+        return await message.edit("❌ Использование: .areact emoji")
 
     emoji = message.text.split(maxsplit=1)[1]
     
