@@ -11,7 +11,7 @@ import time
 # .autoreact — авто-реакции
 
 AFK = False
-AFK_REASON = "👋 Привет, я автоответчик! \nЖди ответа в течении 2-5 часов если я не в сети, если ответа нет - пиши в @feedbackZLX_bot \nОт спама в лс смысла нет ведь уведомления выключены"
+AFK_REASON = "<b>👋 Привет, я автоответчик! \n-------------------\n<u>Жди ответа в течении 2-5 часов если я не в сети, если ответа нет - пиши в @feedbackZLX_bot</u> \n-------------------\nОт спама в лс смысла нет ведь уведомления выключены</b>"
 
 @app.on_message(filters.me & filters.command("afk", prefixes=PREFIXES))
 async def afk(client, message):
