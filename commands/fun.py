@@ -23,7 +23,7 @@ async def quote(client, message):
     return await message.edit("❌ Используй реплеем")
 
   user = reply.from_user
-  text = textwrap.fill(reply.text, width=28)
+  text = textwrap.fill(reply.text, width=25)
 
   if user.photo:
     avatar = await client.download_media(user.photo.big_file_id, file_name = f"bg.jpeg")
@@ -82,7 +82,15 @@ async def quote(client, message):
     )
 
   draw.text((800, 260), f"- {user.first_name}", font=font_name, anchor="mm", fill = "white")
-  draw.text((640, 360), text, font = font_text, anchor="mm", fill = "white")
+  draw.multiline_text(
+    (850, 350),
+    text,
+    font=font_text,
+    anchor="mm",
+    align="center",
+    spacing=10,
+    fill="white"
+)
   draw.text((660, 460), f"ID: {user.id}", font = font_id, anchor = "mm", fill = "white")
   
   final_buffer = BytesIO()
