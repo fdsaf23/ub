@@ -192,6 +192,7 @@ async def spam(client, message):
 async def onda(client, message):
 
     steps = [
+        "#",
         "#2",
         "#20",
         "#201",
@@ -200,13 +201,26 @@ async def onda(client, message):
 
     for step in steps:
         await message.edit(step)
-        await asyncio.sleep(0.4)
+        await asyncio.sleep(0.61)
+    await asyncio.sleep(0.7)
 
     url = "https://www.image2url.com/r2/default/files/1787585136007-cd55e8a9-6014-4de7-870a-fa00010cfd4b.mp4"
+
+    text = """
+<blockquote>Я стою как thunderstorm, зови меня «onda andar»
+Зеркала меня слепят, зови меня «onda andar»
+
+Я стою как thunderstorm, зови меня «onda andar»
+Зеркала меня слепят, зови меня «onda andar»
+
+Я стою как thunderstorm, зови меня «onda andar»
+Зеркала меня слепят, зови меня «onda andar»
+    """
 
     await client.send_video(
             message.chat.id,
             video=url,
+            caption = text
             supports_streaming=True
         )
 
