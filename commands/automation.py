@@ -18,6 +18,9 @@ async def afk(client, message):
 
     global AFK, AFK_REASON
 
+    if AFK:
+        return await message.edit("АФК уже включен")
+
     AFK = True
 
     await message.edit("💤 АФК включен")
