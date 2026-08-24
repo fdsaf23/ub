@@ -28,26 +28,6 @@ async def afk(client, message):
 
     await message.edit("💤 АФК включен")
 
-@app.on_message(~filters.me & filters.private & filters.incoming)
-async def afk_reply(client, message):
-
-    global AFK, REPLY_SLEEP
-
-    if not AFK:
-        return
-
-    if message.from_user and message.from_user.is_bot:
-        return
-
-    now = time.time()
-
-    if now - REPLY_SLEEP < 15:
-        return
-
-    await message.reply(AFK_REASON, parse_mode = enums.ParseMode.HTML)
-
-    REPLY_SLEEP = now
-
 @app.on_message(filters.me & filters.command("unafk", prefixes = PREFIXES))
 async def unafk(client, message):
 
@@ -116,14 +96,42 @@ async def replies_array(client, message):
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
 
 @app.on_message(~filters.me & filters.incoming)
-async def reply_handler(client, message):
+async def incoming_handler(client, message):
 
     if not message.from_user:
         return
 
-    user_id = message.from_user.id
-
-    if user_id not in replies:
+    if message.from_user.is_bot:
         return
 
-    await message.reply(replies[user_id])
+    user_id = message.from_user.id
+
+    # =========================
+    # AFK
+    # =========================
+
+    global AFK, REPLY_SLEEP
+
+    if AFK and message.chat.type == enums.ChatType.PRIVATE:
+
+        now = time.time()
+
+        if now - REPLY_SLEEP >= 15:
+
+            await message.reply(
+                AFK_REASON,
+                parse_mode=enums.ParseMode.HTML
+            )
+
+            REPLY_SLEEP = now
+
+    # =========================
+    # AUTOREPLY
+    # =========================
+
+    if user_id in replies:
+
+        await message.reply(
+            replies[user_id],
+            parse_mode=enums.ParseMode.HTML
+        )
