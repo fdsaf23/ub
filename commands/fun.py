@@ -316,10 +316,9 @@ async def bull_loop(client, message):
     with open("bull/shablon.txt", "r", encoding = "utf-8") as f:
         phrases = [line.strip() for line in f if line.strip()]
 
-    phrase = random.choice(phrases)
-                
-    await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
-    await asyncio.sleep(3.5)
-    await message.reply_text(phrase)
-
-
+    if user_id in bull_active:
+        phrase = random.choice(phrases)
+                    
+        await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
+        await asyncio.sleep(3.5)
+        await message.reply(phrase)
