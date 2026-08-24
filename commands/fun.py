@@ -3,6 +3,8 @@ from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from pyrogram import filters
 
+import asyncio
+
 from core import app
 from cfg import PREFIXES
 
@@ -35,11 +37,15 @@ async def quote(client, message):
         return await message.edit("❌ У пользователя нет аватарки")
 
     await message.edit("🖼 Загружаю аватар...")
+    await asyncio.sleep(0.4)
 
     avatar_path = await client.download_media(
         user.photo.big_file_id,
         file_name="bg.jpeg"
     )
+
+    await message.edit("🎨 Cоздаю фон...")
+    await asyncio.sleep(0.4)
 
     raw_img = Image.open(avatar_path).convert("RGBA")
 
@@ -141,6 +147,12 @@ async def quote(client, message):
         align="left",
         spacing=8
     )
+
+    await message.edit("✨ Добавляю текст...")
+    await asyncio.sleep(0.4)
+
+    await message.edit("📤 Отправляю...")
+    await asyncio.sleep(0.4)
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", quality=85)
