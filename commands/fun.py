@@ -81,7 +81,6 @@ async def quote(client, message):
         f"ID: {user.id}",
         font=font_id,
         fill="white",
-        anchor="lt"
     )
 
     # Username — на уровне нижнего края аватарки
