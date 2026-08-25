@@ -382,7 +382,9 @@ async def type_anim(client, message):
 async def dice_edit(client, message):
     global dice_game
 
-    if len(message.text) == 2 and message.text.split(maxsplit=1)[1].lower() == "stop":
+    args = message.edit.split(maxsplit = 1)
+
+    if len(args) > 1 and args[1].lower() == "stop":
         dice_game = False
         return await message.edit("✅ Игра прекращена")
     
