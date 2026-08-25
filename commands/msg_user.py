@@ -21,7 +21,7 @@ async def mute(client, message):
 🔇 {name} был замьючен навсегда ❗
 Для снятия используй: <code>.unmute</code> в этом чате
   """
-  await message.edit(text)
+  await message.edit(text, disable_web_page_preview=True)
 
 @app.on_message(filters.me & filters.private & filters.command("unmute", prefixes = PREFIXES))
 async def unmute(client, message):
@@ -37,7 +37,7 @@ async def unmute(client, message):
   text = f"""
 📣 {name} был разьючен ❗
   """
-  await message.edit(text)
+  await message.edit(text, disable_web_page_preview=True)
 
 @app.on_message(filters.private & filters.incoming, group = 3)
 async def del_msg(client, message):
