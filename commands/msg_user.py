@@ -6,7 +6,7 @@ from cfg import PREFIXES
 
 muted_users = set()
 
-@app.on_message(filters.me & filters.private & filters.command("mute", prefixes = PREFIXES))cha
+@app.on_message(filters.me & filters.private & filters.command("mute", prefixes = PREFIXES))
 async def mute(client, message):
   chat_id = message.chat.id
   if chat_id in muted_users:
@@ -15,7 +15,7 @@ async def mute(client, message):
   muted_users.add(chat_id)
 
   await client.get_chat(chat_id)
-  name = f"<a href='https://t.me/{username}'>{chat.first_name}</a>"
+  name = f"<a href='https://t.me/{username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id='{chat_id}'>{chat.first_name}</a>"
 
   text = f"""
 🔇 {name} был замьючен навсегда ❗
@@ -32,7 +32,7 @@ async def unmute(client, message):
   muted_users.remove(chat_id)
 
   await client.get_chat(chat_id)
-  name = f"<a href='https://t.me/{chat.username}'>{chat.first_name}</a>"
+  name = f"<a href='https://t.me/{username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id='{chat_id}'>{chat.first_name}</a>"
 
   text = f"""
 📣 {name} был разьючен ❗
