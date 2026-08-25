@@ -406,9 +406,9 @@ async def dice_send(client, message):
         return
 
     player1 = message.dice.value
-    player2 = await client.send_dice(chat_id = message.chat.id, emoji = "🎲")
+    player2 = await client.send_dice(chat_id = message.chat.id, reply_to_message_id=message.id,emoji = "🎲")
 
-    await asyncio.sleep(3.5)
+    await asyncio.sleep(4)
 
     if player1 > player2.dice.value:
         return await message.reply(f"Удача на твоей стороне. {player1} VS {player2.dice.value}")
