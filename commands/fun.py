@@ -21,24 +21,6 @@ font_username = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 30
 )
 
-@app.on_message(
-    ~filters.me & filters.incoming,
-    group=2
-)
-async def auto_dice(client, message):
-
-    if not message.dice:
-        return
-
-    if message.dice.emoji != "🎲":
-        return
-
-    await client.send_dice(
-        chat_id=message.chat.id,
-        emoji="🎲",
-        reply_to_message_id=message.id
-    )
-
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
 async def quote(client, message):
     reply = message.reply_to_message
@@ -394,5 +376,35 @@ async def type_anim(client, message):
 
         except FloodWait as e:
             await asyncio.sleep(e.value)
+
+@app.on_message(filters.me & filters.command("dice", prefixes = PREFIXES))
+async def dice_status_edit(client, message):
+
+    global dice_game
+
+    args = message.text.split(maxsplit=2)
+
+    if len(args) > 1 and args[1].lower() == "stop":
+        if not dice_game:
+            return await message.edit("❌ Игра с кубиком не запущена, используй <code>.dice</code> для запуска")
+
+        dice_game = False
+        await message.edit("✅ Игра прекращена")
+
+    if dice_game:
+        return await message.edit("❌ Игра уже запущена, используй <code>.dice stop</code> для остановки")
+
+    dice_game = True
+
+    await message.edit("✅ Игра с кубиком запущена")
+
+
+
+
+
+
+
+
+
 
 
