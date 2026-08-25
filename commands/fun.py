@@ -21,7 +21,10 @@ font_username = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 30
 )
 
-@app.on_message(~filters.me & filters.incoming)
+@app.on_message(
+    ~filters.me & filters.incoming,
+    group=1
+)
 async def auto_dice(client, message):
 
     if not message.dice:
@@ -32,7 +35,8 @@ async def auto_dice(client, message):
 
     await client.send_dice(
         chat_id=message.chat.id,
-        emoji="🎲"
+        emoji="🎲",
+        reply_to_message_id=message.id
     )
 
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
