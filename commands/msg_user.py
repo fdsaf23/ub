@@ -6,7 +6,7 @@ from cfg import PREFIXES
 import os
 
 muted_users = set()
-group_save_id = -5596420347
+group_save_id = 1891318329
 msg_cache = {}
 
 @app.on_message(filters.me & filters.private & filters.command("mute", prefixes = PREFIXES))
