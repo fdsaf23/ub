@@ -38,6 +38,7 @@ async def help(client, message):
  • <code>typing (stop)</code> - бесконечный тайпинг
  • <code>roast</code> - легенькая прожарка
  • <code>bull (stop)</code> - автоответ оском
+ • <code>type</code> - анимация ввода
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
