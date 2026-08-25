@@ -53,74 +53,110 @@ async def del_msg(client, message):
   except Exception as e:
     await message.reply(e)
 
-@app.on_message(filters.private & filters.incoming, group = 4)
+@app.on_message(filters.private & filters.incoming, group=4)
 async def save_msg(client, message):
+    chat_id = message.chat.id
 
-  chat_id = message.chat.id
+    # Не сохраняем сообщения из самой группы-архива
+    if chat_id == group_save_id:
+        return
 
-  if chat_id == group_save_id:
-    return
+    if not message.from_user or message.from_user.is_self:
+        return
 
-  if not message.from_user or message.from_user.is_self:
-    return
+    key = f"{chat_id}:{message.id}"
 
-  key = f"{chat_id}:{message.id}"
+    data = {
+        "chat_id": chat_id,
+        "message_id": message.id,
+        "text": message.text or message.caption or "",
+        "user_id": message.from_user.id,
+        "name": message.from_user.first_name or "Пользователь",
+        "media": None,
+        "media_type": None
+    }
 
-  data = {
-    "chat_id": chat_id,
-    "message_id": message.id,
-    "text": message.text or message.caption or "",
-    "user_id": message.from_user.id,
-    "name": message.from_user.first_name,
-    "media": None
-  }
-  
-  if message.media:
-    try:
-      os.makedirs("archive_media", exists_ok=True)
+    if message.media:
+        try:
+            os.makedirs("archive_media", exist_ok=True)
 
-      file_path = await message.download(f"archive_media/{chat_id}_{message.id}")
+            file_path = await message.download(
+                f"archive_media/{chat_id}_{message.id}"
+            )
 
-      data["media"] = file_path
-      
-    except Exception as e:
-      print(e)
+            data["media"] = file_path
 
-  msg_cache[key] = data
+            if message.photo:
+                data["media_type"] = "photo"
+            else:
+                data["media_type"] = "document"
+
+        except Exception as error:
+            print(f"Ошибка скачивания медиа: {error}")
+
+    msg_cache[key] = data
+
 
 @app.on_raw_update()
-async def delected_msg(client, update, users, chats):
-  if not isinstance(update, UpdateDeleteMessages):
-    return
+async def deleted_msg(client, update, users, chats):
+    if not isinstance(update, UpdateDeleteMessages):
+        return
 
-  delete_ids = update.messages
+    deleted_ids = update.messages
 
-  for key, data in list(msg_cache.items()):
+    for key, data in list(msg_cache.items()):
+        if data["message_id"] not in deleted_ids:
+            continue
 
-    if data["message_id"] not in delete_ids:
-      continue
+        name = html.escape(data["name"])
+        text = html.escape(data["text"] or "Без текста")
 
-    name = data['name']
-    user_id = data['user_id']
-    text = data['text']
+        header = (
+            f"🗑 Сообщение удалено от "
+            f'<a href="tg://user?id={data["user_id"]}">{name}</a>'
+        )
 
-    caption = f"""
-🗑 Сообщение было удалено от <b><a href='tg://user?id={user_id}'>{name}</a></b>
+        try:
+            media_path = data["media"]
 
-📋 Содержимое:
-<b><i>{text}</i></b>
-"""
+            # Если было медиа — сначала отправляем файл
+            if media_path and os.path.exists(media_path):
+                if data["media_type"] == "photo":
+                    await client.send_photo(
+                        chat_id=group_save_id,
+                        photo=media_path,
+                        caption=header,
+                        parse_mode=enums.ParseMode.HTML
+                    )
+                else:
+                    await client.send_document(
+                        chat_id=group_save_id,
+                        document=media_path,
+                        caption=header,
+                        parse_mode=enums.ParseMode.HTML
+                    )
 
-  try:
-    if (data['media'] and os.path.exists(data['media'])):
-      await client.send_document(chat_id=group_save_id, document=data['media'], caption=caption)
-    else:
-      await client.send_message(chat_id=group_save_id, text=caption)
+                # Текст/подпись медиа — отдельным сообщением
+                if data["text"]:
+                    await client.send_message(
+                        chat_id=group_save_id,
+                        text=f"📋 Содержимое:\n<i>{text[:3900]}</i>",
+                        parse_mode=enums.ParseMode.HTML
+                    )
 
-  except Exception as e:
-    print(e)
+            # Обычное текстовое сообщение
+            else:
+                await client.send_message(
+                    chat_id=group_save_id,
+                    text=f"{header}\n\n📋 Содержимое:\n<i>{text[:3900]}</i>",
+                    parse_mode=enums.ParseMode.HTML
+                )
 
-  del msg_cache[key]
+        except Exception as error:
+            print(f"Ошибка отправки в архив: {error}")
+
+        finally:
+            msg_cache.pop(key, None)
 
   
 
