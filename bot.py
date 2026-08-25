@@ -4,6 +4,7 @@ def load_modules():
     import commands.basic
     import commands.automation
     import commands.fun
+    import commands.msg_user
 
 if __name__ == "__main__" :
 
