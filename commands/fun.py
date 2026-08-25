@@ -378,14 +378,34 @@ async def type_anim(client, message):
         except FloodWait as e:
             await asyncio.sleep(e.value)
 
-@app.on_message(filters.me & filters.command("dice", prefixes=PREFIXES))
-async def game_dice(client, message):
+@app.on_message(filters.me & filters.command("dice", prefixes = PREFIXES))
+async def dice_edit(client, message):
     global dice_game
 
-    dice_game = True
-
-    await message.edit("✅ Игра с кубиком запущена")
-        
+    if len(message.text) == 2 and message.text.split(maxsplit=1)[1].lower() == "stop":
+        dice_game = False
+        return await message.edit("✅ Игра прекращена")
     
+    dice_game = True
+    await message.edit("✅ Игра с кубиком запущена")
+
+@app.on_message(filters.dice)
+async def send_dice(client, message):
+    global dice_game
+
+    if not dice_game:
+        return
+    
+    if dice_game:
+        player1 = message.dice.value
+        player2 = await message.send_dice(chat_id=message.chat.id, emoji="🎲")
+        await asyncio.sleep(3.5)
+
+        if player1 > player2.dice.value:
+            return message.reply(f"Удача на твоей стороне. {player1} VS {player2.dice.value}")
+        elif player1 < player2.dice.value:
+            return message.reply(f"Моя взяла. {player2.dice.value} VS {player1}")
+        else:
+            return message.reply("Судьба не выбрала победителя.")
 
 
