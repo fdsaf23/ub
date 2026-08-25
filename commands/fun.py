@@ -355,7 +355,7 @@ async def type_anim(client, message):
     args = message.text.split(maxsplit=2)
 
     if len(args) < 3:
-        return message.edit("❌ Используй: .type (symbol) text")
+        return await message.edit("❌ Используй: .type (symbol) text")
 
     text = args[2]
     symbol = args[1] or "|"
@@ -371,6 +371,7 @@ async def type_anim(client, message):
     
             await message.edit(tbp)
             await asyncio.sleep(0.05)
+            
         except FloodWait as e:
             await asyncio.sleep(e.value)
 
