@@ -113,7 +113,7 @@ async def delected_msg(client, update, users, chats):
 
   try:
     if (data['media'] and os.path.exists(data['media'])):
-      await client.send_photo(chat_id=group_save_id, photo=data['media'], caption=caption)
+      await client.send_document(chat_id=group_save_id, document=data['media'], caption=caption)
     else:
       await client.send_message(chat_id=group_save_id, text=caption)
 
