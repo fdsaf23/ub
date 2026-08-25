@@ -385,7 +385,7 @@ async def dice_edit(client, message):
     args = message.text.split(maxsplit = 1)
 
     if len(args) > 1 and args[1].lower() == "stop":
-        if not dice:
+        if not dice_game:
             return message.edit("❌ Игра не начата, для запуска: <code>.dice</code>")
         dice_game = False
         return await message.edit("✅ Игра прекращена")
