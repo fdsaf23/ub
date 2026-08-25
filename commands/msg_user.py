@@ -88,7 +88,7 @@ async def save_msg(client, message):
 
   msg_cache[key] = data
 
-@app.on_raw_updates()
+@app.on_raw_update()
 async def delected_msg(client, update, users, chats):
   if not isinstance(update, UpdateDeleteMessage):
     return
