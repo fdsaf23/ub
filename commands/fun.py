@@ -350,7 +350,7 @@ async def bull_loop(client, message):
         text=phrase,
         reply_to_message_id=message.id)
 
-@app.on_message(filters.me & filters.command("type", prefixes = PREFIXES))
+@app.on_message(filters.me & filters.command('type', prefixes = PREFIXES))
 async def type_anim(client, message):
     args = message.text.split(maxsplit=3)
     orig_text = args[2]
@@ -358,12 +358,12 @@ async def type_anim(client, message):
     tbp = ""
     symbol = args[1]
 
-    if len(args) < 2:
-        await message.edit("❌ Используй: .type symbol text")
-    
     if len(args) < 3:
         symbol = "|"
         return
+
+    if len(args) < 2:
+        return await message.edit("❌ Используй: .type symbol text")
 
     while(tbp != orig_text):
         try:
