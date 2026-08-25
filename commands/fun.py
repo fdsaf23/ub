@@ -9,6 +9,7 @@ from cfg import PREFIXES
 
 typing_active = {}
 bull_active = set()
+dice_game = False
 
 font_text = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 48
@@ -376,6 +377,15 @@ async def type_anim(client, message):
 
         except FloodWait as e:
             await asyncio.sleep(e.value)
-            
+
+@app.on_message(filters.me & filters.command("dice", prefixes = PREFIXES))
+async def game_dice(client, message):
+    global dice_game
+
+    gice_game = True
+
+    player1 = await message.dice.value
+    player2 = await message.send_dice(chat_id=message.chat.id, emoji='🎲')
+    
 
 
