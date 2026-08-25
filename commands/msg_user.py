@@ -61,7 +61,7 @@ async def save_msg(client, message):
   if chat_id == group_save_id:
     return
 
-  if message.from_user == message.from_user.is_self:
+  if message.from_user or message.from_user.is_self:
     return
 
   key = f"{chat_id}:{message.id}"
@@ -77,11 +77,11 @@ async def save_msg(client, message):
   
   if message.media:
     try:
-      os.makedirs("archive_media", exits_ok=True)
+      os.makedirs("archive_media", exists_ok=True)
 
       file_path = await message.download(f"archive_media/{chat_id}_{message.id}")
 
-      data["media"] = data
+      data["media"] = file_path
       
     except Exception as e:
       print(e)
@@ -90,7 +90,7 @@ async def save_msg(client, message):
 
 @app.on_raw_updates()
 async def delected_msg(client, update, users, chats):
-  if isinstance(update, UpdateDeleteMessage):
+  if not isinstance(update, UpdateDeleteMessage):
     return
 
   delete_ids = update.messages
@@ -113,9 +113,9 @@ async def delected_msg(client, update, users, chats):
 
   try:
     if (data['media'] and os.path.exists(data['media'])):
-      return await client.send_photo(chat_id=group_save_id, data['media'], caption=caption)
+      return await client.send_photo(chat_id=group_save_id, photo=data['media'], caption=caption)
     else:
-      await client.send_message(chat_id=group_save_id, caption)
+      await client.send_message(chat_id=group_save_id, text=caption)
 
   except Exception as e:
     print(e)
