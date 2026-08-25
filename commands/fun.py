@@ -366,7 +366,7 @@ async def type_anim(client, message):
             await message.edit(tbp + symbol)
             await asyncio.sleep(0.05)
     
-            tbp += text[0]
+            tbp = tbp + text[0]
             text = text[1:]
     
             await message.edit(tbp)
@@ -375,6 +375,5 @@ async def type_anim(client, message):
         except FloodWait as e:
             await asyncio.sleep(e.value)
             
-    await message.edit(tbp)
 
 
