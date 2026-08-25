@@ -352,26 +352,26 @@ async def bull_loop(client, message):
 
 @app.on_message(filters.me & filters.command('type', prefixes = PREFIXES))
 async def type_anim(client, message):
-    args = message.text.split(maxsplit=1)
 
-    if len(args) < 2:
-        return await message.edit("❌ Используй: .type (symbol) text")
-
-    text = args[1]
-    symbol = "|"
+    orig_text = message.text.split(maxsplit=2)[1]
+    text = orig_text
     tbp = ""
+    symbol = "|"
 
-    while(tbp != text):
+    if len(message.text) < 2:
+        return await message.edit("❌ Используй: <code>.type text</code>")
+
+    while(tbp != orig_text):
         try:
             await message.edit(tbp + symbol)
-            await asyncio.sleep(0.05)
-    
+            await ayncio.sleep(0.05)
+
             tbp = tbp + text[0]
             text = text[1:]
-    
+
             await message.edit(tbp)
             await asyncio.sleep(0.05)
-            
+
         except FloodWait as e:
             await asyncio.sleep(e.value)
             
