@@ -15,7 +15,7 @@ async def mute(client, message):
   muted_users.add(chat_id)
 
   chat = await client.get_chat(chat_id)
-  name = f"<a href='https://t.me/{username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id={chat_id}'>{chat.first_name}</a>"
+  name = f"<a href='https://t.me/{chat.username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id={chat_id}'>{chat.first_name}</a>"
 
   text = f"""
 🔇 {name} был замьючен навсегда ❗
@@ -32,7 +32,7 @@ async def unmute(client, message):
   muted_users.remove(chat_id)
 
   chat = await client.get_chat(chat_id)
-  name = f"<a href='https://t.me/{username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id={chat_id}'>{chat.first_name}</a>"
+  name = f"<a href='https://t.me/{chat.username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id={chat_id}'>{chat.first_name}</a>"
 
   text = f"""
 📣 {name} был разьючен ❗
