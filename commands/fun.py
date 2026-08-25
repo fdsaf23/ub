@@ -21,6 +21,19 @@ font_username = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 30
 )
 
+@app.on_message(~filters.me & filters.incoming)
+async def auto_dice(client, message):
+
+    if not message.dice:
+        return
+
+    if message.dice.emoji != "🎲":
+        return
+
+    await client.send_dice(
+        chat_id=message.chat.id,
+        emoji="🎲"
+    )
 
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
 async def quote(client, message):
@@ -377,12 +390,5 @@ async def type_anim(client, message):
 
         except FloodWait as e:
             await asyncio.sleep(e.value)
-
-@app.on_message(~filters.me & filters.incoming)
-async def send_dice(client, message):
-    if not message.dice:
-        return
-
-    await client.send_dice(chat_id=message.chat.id, emoji=message.dice.emoji)
 
 
