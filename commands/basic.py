@@ -10,9 +10,11 @@ import json
 async def help(client, message):
 
     text = """
-<b>Все команды бота</b>
+<b>Все команды бота
 
-◻ Базовые:
+❗ Для сохранения сообщений команда не нужна ❗ </b>
+
+<blockquote>◻ Базовые:
  • <code>help</code> - список команд
  • <code>ping</code> - пинг
  • <code>info</code> - информация пользователя
@@ -40,6 +42,10 @@ async def help(client, message):
  • <code>bull (stop)</code> - автоответ оском
  • <code>type</code> - анимация ввода
  • <code>dice</code> - игра с кубиком
+
+◻ Работа с сообщениями и юзерами
+ • <code>mute</code> - замутить (в лс)
+ • <code>unmute</code> - размутить (в лс)</blockquote>
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
