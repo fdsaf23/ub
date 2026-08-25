@@ -385,8 +385,13 @@ async def dice_edit(client, message):
     args = message.text.split(maxsplit = 1)
 
     if len(args) > 1 and args[1].lower() == "stop":
+        if not dice:
+            return message.edit("❌ Игра не начата, для запуска: <code>.dice</code>")
         dice_game = False
         return await message.edit("✅ Игра прекращена")
+
+    if dice_game:
+        return message.edit("❌ Игра уже запущена, для остановки: <code>.dice stop</code>")
     
     dice_game = True
     await message.edit("✅ Игра с кубиком запущена")
@@ -400,7 +405,7 @@ async def send_dice(client, message):
     
     if dice_game:
         player1 = message.dice.value
-        player2 = await message.send_dice(chat_id=message.chat.id, emoji="🎲")
+        player2 = await client.send_dice(chat_id=message.chat.id, emoji="🎲")
         await asyncio.sleep(3.5)
 
         if player1 > player2.dice.value:
