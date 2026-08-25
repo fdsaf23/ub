@@ -39,6 +39,7 @@ async def help(client, message):
  • <code>roast</code> - легенькая прожарка
  • <code>bull (stop)</code> - автоответ оском
  • <code>type</code> - анимация ввода
+ • <code>dice</code> - игра с кубиком
 """
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
