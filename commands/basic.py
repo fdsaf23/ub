@@ -48,7 +48,7 @@ async def help(client, message):
  • <code>unmute</code> - размутить (в лс)</blockquote>
 """
 
-    await message.edit(text, parse_mode = enums.ParseMode.HTML)
+    await message.edit(text)
 
 @app.on_message(filters.me & filters.command("ping", prefixes=PREFIXES))
 async def ping(client, message):
