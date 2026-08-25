@@ -406,7 +406,7 @@ async def dice_send(client, message):
         return
 
     player1 = message.dice.value
-    player2 = await client.send_dice(chat_id = message.chat.id, reply_to_message_id=message.id, emoji = "🎲")
+    player2 = await client.send_dice(chat_id = message.chat.id, emoji = "🎲")
 
     await asyncio.sleep(3.5)
 
