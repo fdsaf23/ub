@@ -61,7 +61,7 @@ async def save_msg(client, message):
   if chat_id == group_save_id:
     return
 
-  if message.from_user or message.from_user.is_self:
+  if not message.from_user or message.from_user.is_self:
     return
 
   key = f"{chat_id}:{message.id}"
@@ -113,7 +113,7 @@ async def delected_msg(client, update, users, chats):
 
   try:
     if (data['media'] and os.path.exists(data['media'])):
-      return await client.send_photo(chat_id=group_save_id, photo=data['media'], caption=caption)
+      await client.send_photo(chat_id=group_save_id, photo=data['media'], caption=caption)
     else:
       await client.send_message(chat_id=group_save_id, text=caption)
 
