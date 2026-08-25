@@ -10,9 +10,7 @@ import json
 async def help(client, message):
 
     text = """
-<b>Все команды бота
-
-❗ Для сохранения сообщений команда не нужна ❗ </b>
+<b>Все команды бота</b>
 
 <blockquote>◻ Базовые:
  • <code>help</code> - список команд
