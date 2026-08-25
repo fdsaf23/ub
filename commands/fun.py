@@ -378,7 +378,7 @@ async def type_anim(client, message):
         except FloodWait as e:
             await asyncio.sleep(e.value)
 
-@app.on_message(~filters.me & filters.dice & filters.command("dice", prefixes = PREFIXES))
+@app.on_message(filters.dice & filters.command("dice", prefixes = PREFIXES))
 async def game_dice(client, message):
     global dice_game
 
