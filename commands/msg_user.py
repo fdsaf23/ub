@@ -90,7 +90,7 @@ async def save_msg(client, message):
 
 @app.on_raw_update()
 async def delected_msg(client, update, users, chats):
-  if not isinstance(update, UpdateDeleteMessage):
+  if not isinstance(update, UpdateDeleteMessages):
     return
 
   delete_ids = update.messages
