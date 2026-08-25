@@ -366,7 +366,7 @@ async def type_anim(client, message):
     while(tbp != orig_text):
         try:
             await message.edit(tbp + symbol)
-            await ayncio.sleep(0.05)
+            await asyncio.sleep(0.05)
 
             tbp = tbp + text[0]
             text = text[1:]
