@@ -378,7 +378,7 @@ async def type_anim(client, message):
         except FloodWait as e:
             await asyncio.sleep(e.value)
 
-@app.on_message(filter.dice)
+@app.on_message(filters.dice)
 async def send_dice(client, message):
     player1 = message.dice.value
     player2 = await client.send_dice(chat_id=message.chat.id, emoji="🎲")
