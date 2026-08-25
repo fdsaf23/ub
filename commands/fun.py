@@ -378,20 +378,11 @@ async def type_anim(client, message):
         except FloodWait as e:
             await asyncio.sleep(e.value)
 
-@app.on_message(~filters.me & filters.dice)
-async def send_dice_after_user(client, message):
-    player_value = message.dice.value
+@app.on_message(~filters.me & filters.incoming)
+async def send_dice(client, message):
+    if not message.dice:
+        return
 
-    await asyncio.sleep(1)
-
-    bot_dice = await client.send_dice(
-        chat_id=message.chat.id,
-        emoji="🎲"
-    )
-
-    await message.reply_text(
-        f"Твой кубик: {player_value}\n"
-        f"Мой кубик: {bot_dice.dice.value}"
-    )
+    await client.send_dice(chat_id=message.chat.id, emoji=message.dice.emoji)
 
 
