@@ -1,6 +1,7 @@
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from pyrogram import filters, enums
+from pyrogram.errors import FloodWait
 import asyncio
 import random
 from core import app
@@ -348,4 +349,34 @@ async def bull_loop(client, message):
         chat_id=message.chat.id,
         text=phrase,
         reply_to_message_id=message.id)
+
+@app.on_message(filters.me & filters.command("type", prefixes = PREFIXES))
+async def type_anim(client, message):
+    args = message.text.split(maxsplit=3)
+    orig_text = args[2]
+    text = orig_text
+    tbp = ""
+    symbol = args[1]
+
+    if len(args) < 2:
+        await message.edit("❌ Используй: .type symbol text")
     
+    if len(args) < 3:
+        symbol = "|"
+        return
+
+    while(tbp != orig_text):
+        try:
+            await message.edit(tbp + symbol)
+            await asyncio.sleep(0.05)
+    
+            tbp = tbp + text[0]
+            text = text[1:]
+    
+            await message.edit(tbp)
+            await asyncio.sleep(0.05)
+        except FloodWait as e:
+            await asyncio.sleep(e.x)
+
+
+
