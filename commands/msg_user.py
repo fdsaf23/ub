@@ -14,7 +14,7 @@ async def mute(client, message):
 
   muted_users.add(chat_id)
 
-  await client.get_chat(chat_id)
+  chat = await client.get_chat(chat_id)
   name = f"<a href='https://t.me/{username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id='{chat_id}'>{chat.first_name}</a>"
 
   text = f"""
@@ -31,7 +31,7 @@ async def unmute(client, message):
 
   muted_users.remove(chat_id)
 
-  await client.get_chat(chat_id)
+  chat = await client.get_chat(chat_id)
   name = f"<a href='https://t.me/{username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id='{chat_id}'>{chat.first_name}</a>"
 
   text = f"""
@@ -40,7 +40,7 @@ async def unmute(client, message):
   await message.edit(text)
 
 @app.on_message(filters.private & filters.incoming, group = 3)
-async def del_msg(client, messsage):
+async def del_msg(client, message):
   chat_id = message.chat.id
   if chat_id not in muted_users:
     return
