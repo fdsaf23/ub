@@ -398,7 +398,16 @@ async def dice_status_edit(client, message):
 
     await message.edit("✅ Игра с кубиком запущена")
 
+@app.on_message(~filters.me & filters.incoming, group = 2)
+async def dice_send(client, message):
+    global dice_game
 
+    if not dice_game:
+        return
+
+    player1 = message.dice.value
+    player2 = await client.send_dice(chat_id = message.chat.id, emoji = "🎲")
+    
 
 
 
