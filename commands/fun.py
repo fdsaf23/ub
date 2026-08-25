@@ -23,7 +23,7 @@ font_username = ImageFont.truetype(
 
 @app.on_message(
     ~filters.me & filters.incoming,
-    group=1
+    group=2
 )
 async def auto_dice(client, message):
 
