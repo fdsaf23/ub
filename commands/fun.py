@@ -389,7 +389,7 @@ async def dice_status_edit(client, message):
             return await message.edit("❌ Игра с кубиком не запущена, используй <code>.dice</code> для запуска")
 
         dice_game = False
-        await message.edit("✅ Игра прекращена")
+        return await message.edit("✅ Игра прекращена")
 
     if dice_game:
         return await message.edit("❌ Игра уже запущена, используй <code>.dice stop</code> для остановки")
