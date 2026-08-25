@@ -379,8 +379,19 @@ async def type_anim(client, message):
             await asyncio.sleep(e.value)
 
 @app.on_message(~filters.me & filters.dice)
-async def send_dice(client, message):
-    player1 = message.dice.value
-    player2 = await client.send_dice(chat_id=message.chat.id, emoji="🎲")
+async def send_dice_after_user(client, message):
+    player_value = message.dice.value
+
+    await asyncio.sleep(1)
+
+    bot_dice = await client.send_dice(
+        chat_id=message.chat.id,
+        emoji="🎲"
+    )
+
+    await message.reply_text(
+        f"Твой кубик: {player_value}\n"
+        f"Мой кубик: {bot_dice.dice.value}"
+    )
 
 
