@@ -18,7 +18,7 @@ font_id = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 40
 )
 font_username = ImageFont.truetype(
-    "fonts/FredokaOneCyrillic-Regular.ttf", 40
+    "fonts/FredokaOneCyrillic-Regular.ttf", 60
 )
 
 font_wanted = ImageFont.truetype("fonts/Rye-Regular.ttf", 55)
@@ -202,7 +202,7 @@ async def wanted_user(client, message):
     bg.alpha_composite(avatar_img, (avatar_x, 150))
     
     draw.text((200, 45), "WANTED", font=font_wanted, fill=(252, 0, 50), anchor="mm")
-    draw.text((200, 550), f"- {user.first_name} -", font=font_wanted_user, fill="white", anchor="mm")
+    draw.text((200, 450), f"- {user.first_name} -", font=font_wanted_user, fill="white", anchor="mm")
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
