@@ -87,7 +87,7 @@ async def quote(client, message):
         (text_x, avatar_y),
         f"- {user.first_name}",
         font=font_id,
-        fill=(0, 65, 171),
+        fill=(66, 135, 245),
     )
 
     draw.text(
