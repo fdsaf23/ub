@@ -200,7 +200,7 @@ async def wanted_user(client, message):
 
     bg.alpha_composite(avatar_img, (avatar_x, 150))
 
-    text_x = (400, 55) // 2
+    text_x = (400 - 55) // 2
     
     draw.text((text_x, 25), "WANTED", font=font_wanted, fill=(252, 0, 50))
 
