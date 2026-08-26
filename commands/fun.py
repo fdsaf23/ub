@@ -29,7 +29,7 @@ async def quote(client, message):
         return await message.edit("❌ Используй команду реплеем на сообщение")
 
     user = reply.from_user
-    message_text = reply.text or reply.caption or ""
+    message_text = reply.text or reply.caption
 
     if not message_text:
         return await message.edit("❌ В сообщении нет текста")
@@ -161,6 +161,40 @@ async def quote(client, message):
         photo=final_buffer
     )
 
+    await message.delete()
+
+@app.on_message(filters.me & filters.commaned("wanted", prefixes = PREFIXES))
+async def wanted_user(client, message):
+    reply = message.reply_to_message
+
+    if not reply or not reply.from_user:
+        return await message.edit("❌ Используй ответом на сообщение")
+
+    user = reply.from_user
+    message_text = reply.text or reply.caption
+
+    if not message_text:
+        await message.edit("❌ В сообщении нет текста")
+
+    if not user.photo:
+        return message.edit("❌ У пользователя нету аватара")
+
+    avatar_path = await client.download_media(user.photo.big_file_id, file_name = "avatar_wantedUser.jpeg")
+
+    raw_img = Image.open(avatar_path).convert("RGBA")
+    
+    bg = raw_img.resize((800, 1200))
+    bg = Image.filter(ImageFilter.BoxBlur(radius = 28))
+    overlay = Image.new("RGBA", bg.size, (0, 0, 0, 260))
+    bg = Image.alpha_composite(bg.convert("RGBA", overlay))
+    draw = Image.draw(bg)
+
+    final_buffer = BytesIO()
+    bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
+    final_buffer.seek(0)
+    funal_buffer.name = "wanted.jpeg"
+    
+    await message.reply_photo(photo=final_buffer)
     await message.delete()
 
 @app.on_message(filters.me & filters.command("spam", prefixes=PREFIXES))
@@ -413,13 +447,3 @@ async def dice_send(client, message):
         return await message.reply(f"Моя взяла. {player2.dice.value} VS {player1}")
     else:
         return await message.reply("Судьба не выбрала победителя.")
-    
-
-
-
-
-
-
-
-
-
