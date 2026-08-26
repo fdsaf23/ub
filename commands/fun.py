@@ -85,17 +85,14 @@ async def quote(client, message):
     # ID — на уровне верхнего края аватарки
     draw.text(
         (text_x, avatar_y),
-        f"ID: {user.id}",
+        f"- {user.first_name}",
         font=font_id,
         fill="white",
     )
 
-    # Username — на уровне нижнего края аватарки
-    username_text = f"@{user.username}" if user.username else user.first_name
-
     draw.text(
         (text_x, avatar_y + avatar_size - 38),
-        username_text,
+        f"ID: {user.id}",
         font=font_username,
         fill=(210, 210, 210),
     )
