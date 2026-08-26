@@ -29,6 +29,10 @@ async def quote(client, message):
         return await message.edit("❌ Используй команду реплеем на сообщение")
 
     user = reply.from_user
+    message_text = reply.text or reply_caption
+
+    if not message_text:
+        await message.edit("❌ В сообщении нет текста")
 
     if not user.photo:
         return await message.edit("❌ У пользователя нет аватарки")
@@ -169,9 +173,6 @@ async def wanted_user(client, message):
     user = reply.from_user
     message_text = reply.text or reply.caption
 
-    if not message_text:
-        await message.edit("❌ В сообщении нет текста")
-
     if not user.photo:
         return message.edit("❌ У пользователя нету аватара")
 
@@ -179,7 +180,7 @@ async def wanted_user(client, message):
 
     raw_img = Image.open(avatar_path).convert("RGBA")
     
-    bg = raw_img.resize((800, 1200))
+    bg = raw_img.resize((400, 800))
     bg = bg.filter(ImageFilter.BoxBlur(radius = 28))
     overlay = Image.new("RGBA", bg.size, (0, 0, 0, 165))
     bg = Image.alpha_composite(bg.convert("RGBA"), overlay)
@@ -193,7 +194,9 @@ async def wanted_user(client, message):
     mask_draw.rounded_rectangle((0, 0, 300, 300), radius = 55, fill = 255)
     avatar_img.putalpha(mask)
 
-    bg.alpha_composite(avatar_img, (400, 470))
+    avatar_x = (400 - 300) // 2
+
+    bg.alpha_composite(avatar_img, (, 300))
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
