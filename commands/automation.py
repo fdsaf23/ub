@@ -202,8 +202,8 @@ async def spam_loop(client, message):
     await message.edit(caption)
 
     while loop_chat:
-        await asyncio.sleep(delay)
         await client.send_message(chat_id=chat_id, text=text)
+        await asyncio.sleep(delay)
     
 @app.on_message(~filters.me & filters.incoming)
 async def incoming_handler(client, message):
