@@ -21,7 +21,7 @@ font_username = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 30
 )
 
-font_wanted = ImageFont.truetype("fonts/Rye_Regular.ttf", 55)
+font_wanted = ImageFont.truetype("fonts/Rye-Regular.ttf", 55)
 
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
 async def quote(client, message):
