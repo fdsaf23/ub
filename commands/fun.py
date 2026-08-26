@@ -163,7 +163,7 @@ async def quote(client, message):
 
     await message.delete()
 
-@app.on_message(filters.me & filters.commaned("wanted", prefixes = PREFIXES))
+@app.on_message(filters.me & filters.command("wanted", prefixes = PREFIXES))
 async def wanted_user(client, message):
     reply = message.reply_to_message
 
