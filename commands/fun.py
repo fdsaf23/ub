@@ -190,7 +190,7 @@ async def wanted_user(client, message):
     mask = Image.new("L", (300, 300), 0)
     mask_draw = ImageDraw.Draw(mask)
 
-    mask_draw.rounded_rectangle((0, 0, 300, 300), radius = 55, fill = 0)
+    mask_draw.rounded_rectangle((0, 0, 300, 300), radius = 55, fill = 255)
     avatar_img.putalpha(mask)
 
     bg.alpha_composite(avatar_img, (400, 470))
