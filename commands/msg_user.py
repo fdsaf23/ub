@@ -58,7 +58,7 @@ async def interaction_cmd(client, message):
   user = message.from_user
   reply = message.reply_to_message
 
-  if not message.reply_to_message and not reply:
+  if not reply and not reply.from_user:
     return await message.edit("❌ Используй ответом на сообщение")
 
   name = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
