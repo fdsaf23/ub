@@ -160,7 +160,7 @@ async def spam_loop(client, message):
         if not loop_chat:
             return await message.edit("❌ Спам не запущен, для запуска используй: <code>.loop</code>")
         loop_chat = False
-        await message.edit("✅ Спам остановлен")
+        return await message.edit("✅ Спам остановлен")
 
     if len(args) < 4:
         return await message.edit("❌ Пример использования: .loop 5 m Привет")
