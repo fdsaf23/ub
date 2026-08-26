@@ -3,6 +3,7 @@ from core import app
 from cfg import PREFIXES
 import time
 import emoji
+import asyncio
 
 replies = {}
 react = {}
@@ -194,6 +195,8 @@ async def spam_loop(client, message):
 
 Чат: <b><code>{chat.title or chat.first_name}</code></b>
 Интервал: <b><code>{value} {unit}</code></b>
+
+Текст: <b><code>{text}</code></b>
 """
 
     await message.edit(caption)
