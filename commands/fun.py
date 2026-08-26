@@ -29,7 +29,7 @@ async def quote(client, message):
         return await message.edit("❌ Используй команду реплеем на сообщение")
 
     user = reply.from_user
-    message_text = reply.text or reply_caption
+    message_text = reply.text or reply.caption
 
     if not message_text:
         await message.edit("❌ В сообщении нет текста")
@@ -196,7 +196,7 @@ async def wanted_user(client, message):
 
     avatar_x = (400 - 300) // 2
 
-    bg.alpha_composite(avatar_img, (avatar_x, 300))
+    bg.alpha_composite(avatar_img, (avatar_x, 150))
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
