@@ -62,7 +62,7 @@ async def interaction_cmd(client, message):
     return await message.edit("❌ Используй ответом на сообщение")
 
   name = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
-  reply_name = f"<a href='tg://user?id={reply.id}'>{reply.first_name}</a>"
+  reply_name = f"<a href='tg://user?id={reply.from_user.id}'>{reply.from_user.first_name}</a>"
   
   if text.lower() == "hug":
     return await message.edit(f"🫂 | {name} обнял {reply_name}")
