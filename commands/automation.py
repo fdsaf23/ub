@@ -156,12 +156,13 @@ async def spam_loop(client, message):
     chat_id = message.chat.id
     args = message.text.split(maxsplit = 3)
 
+    if len(args) < 2 and args[1].lower() == "stop":
+        if not loop_chat:
+            return await message.edit("❌ Спам не запущен, для запуска используй: <code>.loop</code>")
+
     if len(args) < 4:
         return await message.edit("❌ Пример использования: .loop 5 m Привет")
 
-    if len(args) == 2 and args[1].lower() == "stop":
-        if not loop_chat:
-            return await message.edit("❌ Спам не запущен, для запуска используй: <code>.loop</code>")
         loop_chat = False
         await message.edit("✅ Спам остановлен")
 
@@ -196,7 +197,7 @@ async def spam_loop(client, message):
 Интервал: <b><code>{value} {unit}</code></b>
 """
 
-    await message.edit()
+    await message.edit(caption)
 
     while True:
         await asyncio.sleep(delay)
