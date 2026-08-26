@@ -184,7 +184,7 @@ async def wanted_user(client, message):
     raw_img = Image.open(avatar_path).convert("RGBA")
     
     bg = raw_img.resize((800, 1200))
-    bg = Image.filter(ImageFilter.BoxBlur(radius = 28))
+    bg = bg.filter(ImageFilter.BoxBlur(radius = 28))
     overlay = Image.new("RGBA", bg.size, (0, 0, 0, 260))
     bg = Image.alpha_composite(bg.convert("RGBA", overlay))
     draw = Image.draw(bg)
