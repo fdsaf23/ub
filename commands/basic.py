@@ -30,7 +30,7 @@ async def help(client, message):
  • <code>areact</code> - автореакция
  • <code>lreact</code> - список автореакций
  • <code>dreact</code> - удалить автореакцию
- • <code>loop (stop)</code - спам с определенной задержкой
+ • <code>loop (stop)</code> - спам с определенной задержкой
 
 ◻ Фановые:
  • <code>quote</code> - генерация карточки
@@ -41,6 +41,7 @@ async def help(client, message):
  • <code>bull (stop)</code> - автоответ оском
  • <code>type</code> - анимация ввода
  • <code>dice (stop)</code> - игра с кубиком
+ • <code>wanted</code> - карточка с розыском
 
 ◻ Работа с юзерами
  • <code>mute</code> - замутить (в лс)
