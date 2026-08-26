@@ -56,7 +56,7 @@ async def interaction_cmd(client, message):
 
   text = message.command[0]
   user = message.from_user
-  reply = message.reply_to_message.from_user
+  reply = message.reply_to_message
 
   if not message.reply_to_message and not reply:
     return await message.edit("❌ Используй ответом на сообщение")
