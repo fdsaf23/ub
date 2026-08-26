@@ -148,7 +148,7 @@ async def list_react(client, message):
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
 
-@app.on_message(filters.me & filters.command("loop"), prefixes = PREFIXES)
+@app.on_message(filters.me & filters.command("loop", prefixes = PREFIXES))
 async def spam_loop(client, message):
 
     global loop_chat
