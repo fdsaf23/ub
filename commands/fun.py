@@ -22,7 +22,7 @@ font_username = ImageFont.truetype(
 )
 
 font_wanted = ImageFont.truetype("fonts/Rye-Regular.ttf", 55)
-font_wanted_user = ImageFont.truetype("fonts/DejaVuSans-Bold.ttf", 35)
+font_wanted_user = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 15)
 
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
 async def quote(client, message):
@@ -202,7 +202,7 @@ async def wanted_user(client, message):
     bg.alpha_composite(avatar_img, (avatar_x, 150))
     
     draw.text((200, 45), "WANTED", font=font_wanted, fill=(252, 0, 50), anchor="mm")
-    draw.text((200, 200), f"- {user.first_name} -", font=font_wanted_user, fill=(199, 199, 199), anchor="mm")
+    draw.text((200, 200), f"- {user.first_name} -", font=font_wanted_user, fill="white" anchor="mm")
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
