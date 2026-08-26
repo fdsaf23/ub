@@ -185,6 +185,16 @@ async def wanted_user(client, message):
     bg = Image.alpha_composite(bg.convert("RGBA"), overlay)
     draw = ImageDraw.Draw(bg)
 
+    avatar_img = raw_img.resize((300, 300))
+
+    mask = Image.new("L", (300, 300), 0)
+    mask_draw = ImageDraw.Draw(mask)
+
+    mask_draw.rounded_rectangle((0, 0, 300, 300), radius = 55, fill = 0)
+    avatar_img.putalpha(mask)
+
+    bg.alpha_composie(avatar_img, (400, 470))
+
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
     final_buffer.seek(0)
