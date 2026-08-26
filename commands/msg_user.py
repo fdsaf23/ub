@@ -51,14 +51,36 @@ async def del_msg(client, message):
   except Exception as e:
     await message.reply(e)
 
-@app.on_message(filters.command(["hug", "slap", "kiss", "pat", "bite", "poke", "wave", "hit", "fuck", "kick"], prefixes = PREFIXES))
+@app.on_message(filters & filters.command(["hug", "slap", "kiss", "pat", "bite", "poke", "wave", "hit", "fuck", "kick"], prefixes = PREFIXES))
 async def interaction_cmd(client, message):
 
-  text = message.command[0].lower()
+  text = message.command[0]
+  user = message.from_user
+  reply = message.reply_to_message.from_user
 
+  name = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
+  reply_name = f"<a href='tg://user?id={reply.id}'>{reply.first_name}</a>"
+  
   if text.lower() == "hug":
-    await client.send_message(chat_id=message.chat_id, text="ты обнял его", reply_to_message_id=message.id)
-
+    return message.edit(f"🫂 | {name} обнял {reply_name}")
+  elif text.lower() == "slap":
+    return message.edit(f"👋💥 | {name} дал пощечину {reply_name}")
+  elif text.lower() == "kiss":
+    return message.edit(f"💋 | {name} поцеловал {reply_name}")
+  elif text.lower() == "pat":
+    return message.edit(f"🫳 | {name} погладил {reply_name}")
+  elif text.lower() == "bite":
+    return message.edit(f"🦷 | {name} укусил {reply_name}")
+  elif text.lower() == "poke":
+    return message.edit(f"👉 | {name} ткнул {reply_name}")
+  elif text.lower() == "wave":
+    return message.edit(f"🙋‍♂️ | {name} помахал {reply_name}")
+  elif text.lower() == "hit":
+    return message.edit(f"👊 | {name} ударил {reply_name}")
+  elif text.lower() == "fuck":
+    return message.edit(f"🔞 | {name} трахнул {reply_name}")
+  elif text.lower() == "kick":
+    return message.edit(f"👞 | {name} пнул {reply_name}")
 
 
 
