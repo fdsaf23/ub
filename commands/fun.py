@@ -177,7 +177,7 @@ async def wanted_user(client, message):
     message_text = reply.text or reply.caption
 
     if not user.photo:
-        return message.edit("❌ У пользователя нету аватара")
+        return await message.edit("❌ У пользователя нету аватара")
 
     avatar_path = await client.download_media(user.photo.big_file_id, file_name = "avatar_wantedUser.jpeg")
 
@@ -202,7 +202,7 @@ async def wanted_user(client, message):
     bg.alpha_composite(avatar_img, (avatar_x, 150))
     
     draw.text((200, 45), "WANTED", font=font_wanted, fill=(252, 0, 50), anchor="mm")
-    draw.text((200, 540), f"- {user.first_name} -", font=font_wanted_user, fill=(217, 217, 217), anchor="mm")
+    draw.text((200, 560), f"- {user.first_name} -", font=font_wanted_user, fill=(217, 217, 217), anchor="mm")
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
