@@ -181,6 +181,11 @@ async def wanted_user(client, message):
     if not user.photo:
         return await message.edit("❌ У пользователя нету аватара")
 
+    await message.edit(f"🔍 Ищу <b>{user.first_name}</b> в базе преступников...")
+    await asyncio.sleep(1.7)
+
+    await message.edit("Отправляю сведения...")
+
     avatar_path = await client.download_media(user.photo.big_file_id, file_name = "avatar_wantedUser.jpeg")
 
     raw_img = Image.open(avatar_path).convert("RGBA")
