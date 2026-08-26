@@ -201,7 +201,7 @@ async def spam_loop(client, message):
 
     await message.edit(caption)
 
-    while True:
+    while loop_chat:
         await asyncio.sleep(delay)
         await client.send_message(chat_id=chat_id, text=text)
     
