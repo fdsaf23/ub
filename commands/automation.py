@@ -6,6 +6,7 @@ import emoji
 
 replies = {}
 react = {}
+loop_chat = False
 
 AFK = False
 REPLY_SLEEP = 0
@@ -147,6 +148,60 @@ async def list_react(client, message):
 
     await message.edit(text, parse_mode = enums.ParseMode.HTML)
 
+@app.on_message(filters.me & filters.command("loop"), prefixes = PREFIXES)
+async def spam_loop(client, message):
+
+    global loop_chat:
+    
+    chat_id = message.chat.id
+    args = message.text.split(maxsplit = 3)
+
+    if len(args) < 4:
+        return await message.edit("❌ Пример использования: .loop 5 m Привет")
+
+    if len(args) == 2 and args[1].lower() == "stop":
+        if not loop_chat:
+            return await message.edit("❌ Спам не запущен, для запуска используй: <code>.loop</code>")
+        loop_chat = False
+        await message.edit("✅ Спам остановлен")
+
+    if loop_chat:
+        return await message.edit("❌ Спам уже запущен, для остановки используй: <code>.loop stop</code>")
+
+    try:
+        value = int(args[1])
+    except:
+        return await message.edit("❌ Интервал должен быть числом")
+
+    unit = args[2].lower()
+    text = args[3]
+
+    if unit == "s":
+        delay = value
+    elif unit == "m":
+        delay = value * 60
+    elif unit == "h":
+        delay = value * 3600
+    else:
+        return await message.edit("❌ Используй 's'/'m'/'h'")
+
+    loop_chat = True
+
+    chat = await client.get_chat(chat_id)
+
+    caption = f"""
+✅ Цикл спама запущен
+
+Чат: <b><code>{chat.title or chat.first_name}</code></b>
+Интервал: <b><code>{value} {unit}</code></b>
+"""
+
+    await message.edit()
+
+    while True:
+        await asyncio.sleep(delay)
+        await client.send_message(chat_id=chat_id, text=text)
+    
 @app.on_message(~filters.me & filters.incoming)
 async def incoming_handler(client, message):
 
