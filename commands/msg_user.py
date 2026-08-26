@@ -50,3 +50,19 @@ async def del_msg(client, message):
     await message.delete()
   except Exception as e:
     await message.reply(e)
+
+@app.on_message(filters.command(["hug", "slap", "kiss", "pat", "bite", "poke", "wave", "hit", "fuck", "kick"]))
+async def interaction_cmd(client, message):
+
+  text = message.command[0].lower()
+
+  if text.lower() == "hug":
+    await client.send_message(chat_id=message.chat_id, "ты обнял его", reply_to_message_id=message.id)
+
+
+
+
+    
+
+
+
