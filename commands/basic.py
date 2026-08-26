@@ -41,7 +41,7 @@ async def help(client, message):
  • <code>type</code> - анимация ввода
  • <code>dice</code> - игра с кубиком
 
-◻ Работа с сообщениями и юзерами
+◻ Работа с юзерами
  • <code>mute</code> - замутить (в лс)
  • <code>unmute</code> - размутить (в лс)</blockquote>
  • <code>hug</code> - обнять пользователя.
