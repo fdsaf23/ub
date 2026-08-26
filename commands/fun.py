@@ -196,7 +196,7 @@ async def wanted_user(client, message):
 
     avatar_x = (400 - 300) // 2
 
-    bg.alpha_composite(avatar_img, (, 300))
+    bg.alpha_composite(avatar_img, (avatar_x, 300))
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
