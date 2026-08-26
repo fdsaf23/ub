@@ -44,13 +44,13 @@ async def help(client, message):
 ◻ Работа с сообщениями и юзерами
  • <code>mute</code> - замутить (в лс)
  • <code>unmute</code> - размутить (в лс)</blockquote>
- • <code>hug</code> — обнять пользователя.
- • <code>slap</code> — дать пощёчину.
- • <code>kiss</code> — поцеловать.
- • <code>pat</code> — погладить.
- • <code>bite</code> — укусить.
- • <code>poke</code> — ткнуть.
- • <code>wave</code> — помахать.
+ • <code>hug</code> - обнять пользователя.
+ • <code>slap</code> - дать пощёчину.
+ • <code>kiss</code> - поцеловать.
+ • <code>pat</code> - погладить.
+ • <code>bite</code> - укусить.
+ • <code>poke</code> - ткнуть.
+ • <code>wave</code> - помахать.
  • <code>hit</code> - ударить
  • <code>fuck</code> - трахнуть
  • <code>kick</code> - пнуть
