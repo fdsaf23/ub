@@ -51,7 +51,7 @@ async def del_msg(client, message):
   except Exception as e:
     await message.reply(e)
 
-@app.on_message(filters.command(["hug", "slap", "kiss", "pat", "bite", "poke", "wave", "hit", "fuck", "kick"]), prefixes = PREFIXES)
+@app.on_message(filters.command(["hug", "slap", "kiss", "pat", "bite", "poke", "wave", "hit", "fuck", "kick"], prefixes = PREFIXES))
 async def interaction_cmd(client, message):
 
   text = message.command[0].lower()
