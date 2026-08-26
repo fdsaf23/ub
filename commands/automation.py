@@ -151,7 +151,7 @@ async def list_react(client, message):
 @app.on_message(filters.me & filters.command("loop"), prefixes = PREFIXES)
 async def spam_loop(client, message):
 
-    global loop_chat:
+    global loop_chat
     
     chat_id = message.chat.id
     args = message.text.split(maxsplit = 3)
