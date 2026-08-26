@@ -21,6 +21,8 @@ font_username = ImageFont.truetype(
     "fonts/FredokaOneCyrillic-Regular.ttf", 30
 )
 
+font_wanted = ImageFont.truetype("fonts/")
+
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
 async def quote(client, message):
     reply = message.reply_to_message
@@ -32,7 +34,7 @@ async def quote(client, message):
     message_text = reply.text or reply.caption
 
     if not message_text:
-        await message.edit("❌ В сообщении нет текста")
+        return await message.edit("❌ В сообщении нет текста")
 
     if not user.photo:
         return await message.edit("❌ У пользователя нет аватарки")
