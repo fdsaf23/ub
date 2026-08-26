@@ -200,7 +200,7 @@ async def wanted_user(client, message):
 
     bg.alpha_composite(avatar_img, (avatar_x, 150))
     
-    draw.text((200, 25), "WANTED", font=font_wanted, fill=(252, 0, 50))
+    draw.text((200, 25), "WANTED", font=font_wanted, fill=(252, 0, 50), anchor="mm")
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
