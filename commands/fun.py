@@ -29,10 +29,6 @@ async def quote(client, message):
         return await message.edit("❌ Используй команду реплеем на сообщение")
 
     user = reply.from_user
-    message_text = reply.text or reply.caption
-
-    if not message_text:
-        return await message.edit("❌ В сообщении нет текста")
 
     if not user.photo:
         return await message.edit("❌ У пользователя нет аватарки")
