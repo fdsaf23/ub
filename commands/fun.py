@@ -22,8 +22,9 @@ font_username = ImageFont.truetype(
 )
 
 font_wanted = ImageFont.truetype("fonts/Rye-Regular.ttf", 55)
-font_wanted_user = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 20)
+font_wanted_user = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 23)
 font_wanted_username = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 20)
+font_reward = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 20)
 
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
 async def quote(client, message):
@@ -207,7 +208,8 @@ async def wanted_user(client, message):
     
     draw.text((200, 45), "WANTED", font=font_wanted, fill=(252, 0, 50), anchor="mm")
     draw.text((200, 550), f"- {user.first_name} -", font=font_wanted_user, fill=(217, 217, 217), anchor="mm")
-    draw.text((200, 570), f"{user_name}", font=font_wanted_username, fill=(148, 148, 148), anchor="mm")
+    draw.text((200, 585), f"{user_name}", font=font_wanted_username, fill=(148, 148, 148), anchor="mm")
+    draw.text((200, 750), f"REWARD: ${random_reward}", font = font_reward, fill="white", anchor="mm")
 
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
