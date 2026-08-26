@@ -192,7 +192,7 @@ async def wanted_user(client, message):
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", qualite = 85)
     final_buffer.seek(0)
-    funal_buffer.name = "wanted.jpeg"
+    final_buffer.name = "wanted.jpeg"
     
     await message.reply_photo(photo=final_buffer)
     await message.delete()
