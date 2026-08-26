@@ -36,7 +36,7 @@ async def unmute(client, message):
   name = f"<a href='https://t.me/{chat.username}'>{chat.first_name}</a>" if chat.username else f"<a href='tg://user?id={chat_id}'>{chat.first_name}</a>"
 
   text = f"""
-📣 {name} был разьючен ❗
+📣 {name} был размьючен ❗
   """
   await message.edit(text, disable_web_page_preview=True)
 
