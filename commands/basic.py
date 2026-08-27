@@ -12,7 +12,7 @@ async def help(client, message):
     text = """
 <b>Все команды бота</b>
 
-<b><u>Перед командой должна стоять <code>.</code> или <code>/</code> ❗</u></b>
+<b><i>Перед командой должна стоять <code>.</code> или <code>/</code> ❗</i></b>
 
 <blockquote>◻ Базовые:
  • <code>help</code> - список команд
