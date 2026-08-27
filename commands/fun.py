@@ -32,7 +32,7 @@ font_music_time = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 22)
 
 def get_color(img):
     small = img.convert("RGB").resize((1, 1))
-    return small.getpixel(0, 0)
+    return small.getpixel((0, 0))
 
 @app.on_message(filters.me & filters.command("music", prefixes = PREFIXES))
 async def music_card(client, message):
