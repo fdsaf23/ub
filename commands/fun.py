@@ -68,6 +68,15 @@ async def music_card(client, message):
     final_buffer.seek(0)
     final_buffer.name = "music_card.jpeg"
 
+    title = audio.title
+    author = audio.performer
+    duration = audio.duration 
+    duration_str = f"{duration // 60}:{duration % 60:02d}"
+
+    text_x = 350
+    draw.text((text_x, 100), title, font=font_music_title, fill="white")
+    draw.text((text_x, 150), author, font = font_music_artist, fill = (167, 167, 167, 255))
+
     await message.reply_photo(photo = final_buffer)
     await message.delete()
 
