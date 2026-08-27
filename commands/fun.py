@@ -63,7 +63,7 @@ async def music_card(client, message):
 
     avatar = raw_img.resize((280, 280))
     mask = Image.new("L", (280, 280), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, 280, 280), radius = 35, fill = 255, outline = "white", width = 2)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, 280, 280), radius = 35, fill = 255, outline = "white", width = 10)
     avatar.putalpha(mask)
     bg.alpha_composite(avatar, (40, 70))
 
@@ -78,7 +78,7 @@ async def music_card(client, message):
     draw.text((text_x, 150), author, font=font_music_artist, fill=(167, 167, 167))
 
     bar_x, bar_y, bar_w, bar_h = text_x, 280, 560, 10
-    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 4, fill = color_bar, outline = "white", width = 1)
+    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 4, fill = color_bar, outline = "white", width = 3)
     draw.text((bar_x, bar_y + 20), "0:00", font = font_music_time, fill = (167, 167, 167))
     draw.text((bar_x + bar_w - 40, bar_y + 20), duration_str, font = font_music_time, fill = (167, 167, 167))
     
