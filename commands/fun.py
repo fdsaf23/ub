@@ -30,7 +30,7 @@ font_music_title = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 34
 font_music_artist = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 26)
 font_music_time = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 22)
 
-@app.on_message(filters.me & filters.command("music", prefixess = PREFIXES))
+@app.on_message(filters.me & filters.command("music", prefixes = PREFIXES))
 async def music_card(client, message):
     reply = message.reply_to_message
 
