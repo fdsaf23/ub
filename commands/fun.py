@@ -30,62 +30,36 @@ font_music_title = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 34
 font_music_artist = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 26)
 font_music_time = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 22)
 
-@app.on_message(filters.me & filters.command("music", prefixes=PREFIXES))
+@app.on_message(filters.me & filters.command("music", prefixess = PREFIXES))
 async def music_card(client, message):
     reply = message.reply_to_message
 
     if not reply:
-        return await message.edit("❌ Используй команду реплеем на аудио")
+        return await message.edit("❌ Ответь на сообщение с музыкой")
 
-    audio = reply.audio or reply.voice
-
-    if not audio:
-        return await message.edit("❌ В сообщении нет музыки")
-
-    await message.edit("🎧 Загружаю обложку...")
-    await asyncio.sleep(0.4)
+    if not reply.audio or reply.voice:
+        return await message.edit("❌ В сообщение музыка не обнаружена")
 
     thumb_path = None
-    if audio.thumbs:
-        thumb_path = await client.download_media(audio.thumbs[-1].file_id, file_name="music_thumb.jpeg")
+    if audio.thumb:
+        thumb_path = await client.download_media(audio.thumb[-1].file_id, file_name = "avatarMusic.jpeg")
 
     if thumb_path:
         raw_img = Image.open(thumb_path).convert("RGBA")
     else:
-        raw_img = Image.new("RGBA", (500, 500), (60, 60, 70, 255))
+        raw_img = Image.new("RGBA", (500, 500), (60, 60, 40, 255))
 
-    bg = raw_img.resize((1000, 400)).filter(ImageFilter.BoxBlur(radius=20))
-    overlay = Image.new("RGBA", bg.size, (0, 0, 0, 165))
-    bg = Image.alpha_composite(bg.convert("RGBA"), overlay)
-    draw = ImageDraw.Draw(bg)
+    bg = raw_img.resize((1000, 400))
+    bg = bg.filter(ImageFilter.BoxBlur(raduis = 17))
+    overlay = Image.new("RGBA", bg.size, fill = (0, 0, 0, 150))
+    bg = Image.alpha_composite(bg.convert("RGB"), overlay)
+    
+    final_buffer = BytesIO()
+    bg.convert("RGB").save(final_buffer, "JPEG", quality = 90)
+    final_buffer.seek(0)
+    final_buffer.name = "music_card.jpeg"
 
-    cover = raw_img.resize((260, 260))
-    mask = Image.new("L", (260, 260), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, 260, 260), radius=35, fill=255)
-    cover.putalpha(mask)
-    bg.alpha_composite(cover, (70, 70))
-
-    title = audio.title or "Неизвестный трек"
-    performer = audio.performer or "Неизвестный исполнитель"
-    duration = audio.duration or 0
-    duration_str = f"{duration // 60}:{duration % 60:02d}"
-
-    text_x = 350
-    draw.text((text_x, 100), title, font=font_music_title, fill="white")
-    draw.text((text_x, 150), performer, font=font_music_artist, fill=(190, 190, 190))
-
-    bar_x, bar_y, bar_width, bar_height = text_x, 250, 560, 8
-    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_width, bar_y + bar_height), radius=4, fill=(66, 135, 245))
-
-    draw.text((bar_x, bar_y + 18), duration_str, font=font_music_time, fill=(180, 180, 180))
-    draw.text((bar_x + bar_width - 45, bar_y + 18), duration_str, font=font_music_time, fill=(180, 180, 180))
-
-    buf = BytesIO()
-    bg.convert("RGB").save(buf, "JPEG", quality=90)
-    buf.seek(0)
-    buf.name = "music.jpeg"
-
-    await message.reply_photo(photo=buf)
+    await message.reply_photo(photo = final_buffer)
     await message.delete()
 
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
