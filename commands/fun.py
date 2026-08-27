@@ -69,8 +69,14 @@ async def music_card(client, message):
     duration_str = f"{duration // 60}:{duration % 60:02d}"
 
     text_x = 370
-    draw.text((text_x, 100), title, font=font_music_title, fill="white")
+    draw.text((text_x, 90), title, font=font_music_title, fill="white")
     draw.text((text_x, 150), author, font=font_music_artist, fill=(167, 167, 167))
+
+    bar_x, bar_y, bar_w, bar_h = text_x, 280, 560, 7
+    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 8, fill = (15, 2, 166))
+    draw.text((bar_x, bar_y + 20), "0:00", fill = (167, 167, 167))
+    draw.text((bar_x + bar_w, bar_y + 20), duration_str, fill = (167, 167, 167))
+    
     
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", quality = 90)
