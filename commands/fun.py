@@ -30,6 +30,10 @@ font_music_title = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 42
 font_music_artist = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 26)
 font_music_time = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 22)
 
+def get_color(img):
+    small = img.convert("RGB").resize((1, 1))
+    return small.getpixel(0, 0)
+
 @app.on_message(filters.me & filters.command("music", prefixes = PREFIXES))
 async def music_card(client, message):
     reply = message.reply_to_message
@@ -73,7 +77,7 @@ async def music_card(client, message):
     draw.text((text_x, 150), author, font=font_music_artist, fill=(167, 167, 167))
 
     bar_x, bar_y, bar_w, bar_h = text_x, 280, 560, 9
-    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 8, fill = (92, 78, 245))
+    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 8, fill = get_color(raw_img))
     draw.text((bar_x, bar_y + 20), "0:00", font = font_music_time, fill = (167, 167, 167))
     draw.text((bar_x + bar_w - 40, bar_y + 20), duration_str, font = font_music_time, fill = (167, 167, 167))
     
