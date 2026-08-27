@@ -59,7 +59,7 @@ async def music_card(client, message):
 
     avatar = raw_img.resize((280, 280))
     mask = Image.new("L", (280, 280), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, 280, 280), radius = 120, fill = 255)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, 280, 280), radius = 35, fill = 255)
     avatar.putalpha(mask)
     bg.alpha_composite(avatar, (40, 70))
     
