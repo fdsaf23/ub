@@ -62,11 +62,6 @@ async def music_card(client, message):
     ImageDraw.Draw(mask).rounded_rectangle((0, 0, 280, 280), radius = 35, fill = 255)
     avatar.putalpha(mask)
     bg.alpha_composite(avatar, (40, 70))
-    
-    final_buffer = BytesIO()
-    bg.convert("RGB").save(final_buffer, "JPEG", quality = 90)
-    final_buffer.seek(0)
-    final_buffer.name = "music_card.jpeg"
 
     title = audio.title
     author = audio.performer
@@ -76,6 +71,11 @@ async def music_card(client, message):
     text_x = 350
     draw.text((text_x, 100), title, font=font_music_title, fill="white")
     draw.text((text_x, 150), author, font=font_music_artist, fill=(167, 167, 167))
+    
+    final_buffer = BytesIO()
+    bg.convert("RGB").save(final_buffer, "JPEG", quality = 90)
+    final_buffer.seek(0)
+    final_buffer.name = "music_card.jpeg"
 
     await message.reply_photo(photo = final_buffer)
     await message.delete()
