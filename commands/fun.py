@@ -71,14 +71,14 @@ async def music_card(client, message):
     author = audio.performer
     duration = audio.duration 
     duration_str = f"{duration // 60}:{duration % 60:02d}"
-    color = get_color(raw_img)
+    color_bar = get_color(raw_img)
 
     text_x = 370
     draw.text((text_x, 90), title, font=font_music_title, fill="white")
     draw.text((text_x, 150), author, font=font_music_artist, fill=(167, 167, 167))
 
     bar_x, bar_y, bar_w, bar_h = text_x, 280, 560, 9
-    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 8, fill = сolor, outline = "white", width = 3)
+    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 8, fill = сolor_bar, outline = "white", width = 3)
     draw.text((bar_x, bar_y + 20), "0:00", font = font_music_time, fill = (167, 167, 167))
     draw.text((bar_x + bar_w - 40, bar_y + 20), duration_str, font = font_music_time, fill = (167, 167, 167))
     
