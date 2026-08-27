@@ -73,9 +73,9 @@ async def music_card(client, message):
     draw.text((text_x, 150), author, font=font_music_artist, fill=(167, 167, 167))
 
     bar_x, bar_y, bar_w, bar_h = text_x, 280, 560, 9
-    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 8, fill = (113, 104, 217))
+    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 8, fill = (92, 78, 245))
     draw.text((bar_x, bar_y + 20), "0:00", font = font_music_time, fill = (167, 167, 167))
-    draw.text((bar_x + bar_w - 30, bar_y + 20), duration_str, font = font_music_time, fill = (167, 167, 167))
+    draw.text((bar_x + bar_w - 40, bar_y + 20), duration_str, font = font_music_time, fill = (167, 167, 167))
     
     
     final_buffer = BytesIO()
