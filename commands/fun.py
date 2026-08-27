@@ -33,6 +33,7 @@ font_music_time = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 22)
 @app.on_message(filters.me & filters.command("music", prefixes = PREFIXES))
 async def music_card(client, message):
     reply = message.reply_to_message
+    audio = reply.audio or reply.voice
 
     if not reply:
         return await message.edit("❌ Ответь на сообщение с музыкой")
