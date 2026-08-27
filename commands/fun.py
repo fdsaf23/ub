@@ -45,6 +45,11 @@ async def music_card(client, message):
     if not reply.audio or reply.voice:
         return await message.edit("❌ В сообщение музыка не обнаружена")
 
+    await message.edit("🎧 Определяю песню...")
+    await asyncio.sleep(2)
+
+    await message.edit("✨ Добавляю аватарку...")
+
     thumb_path = None
     if audio.thumbs:
         thumb_path = await client.download_media(audio.thumbs[-1].file_id, file_name = "avatarMusic.jpeg")
@@ -60,6 +65,10 @@ async def music_card(client, message):
     bg = Image.alpha_composite(bg.convert("RGBA"), overlay)
 
     draw = ImageDraw.Draw(bg)
+
+    await asyncio.sleep(2)
+    
+    await message.edit("🎹 Добавляю автора и название...")
 
     avatar = raw_img.resize((280, 280))
     mask = Image.new("L", (280, 280), 0)
@@ -81,7 +90,11 @@ async def music_card(client, message):
     draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_w, bar_y + bar_h), radius = 4, fill = color_bar, outline = "white", width = 3)
     draw.text((bar_x, bar_y + 20), "0:00", font = font_music_time, fill = (167, 167, 167))
     draw.text((bar_x + bar_w - 40, bar_y + 20), duration_str, font = font_music_time, fill = (167, 167, 167))
-    
+
+    await asyncio.sleep(2)
+
+    await message.edit("🎨 Создаю карточку и отправляю...")
+    await asyncio.sleep(2)
     
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", quality = 90)
