@@ -30,7 +30,7 @@ font_music_title = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 34
 font_music_artist = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 26)
 font_music_time = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 22)
 
-@app.on_message(filters.me & filters.command("music", prefixes="."))
+@app.on_message(filters.me & filters.command("music", prefixes=PREFIXES))
 async def music_card(client, message):
     reply = message.reply_to_message
 
@@ -46,98 +46,46 @@ async def music_card(client, message):
     await asyncio.sleep(0.4)
 
     thumb_path = None
-    thumbs = getattr(audio, "thumbs", None)
-
-    if thumbs:
-        thumb_path = await client.download_media(
-            thumbs[-1].file_id,
-            file_name="music_thumb.jpeg"
-        )
+    if audio.thumbs:
+        thumb_path = await client.download_media(audio.thumbs[-1].file_id, file_name="music_thumb.jpeg")
 
     if thumb_path:
         raw_img = Image.open(thumb_path).convert("RGBA")
     else:
-        # Заглушка, если обложки нет
         raw_img = Image.new("RGBA", (500, 500), (60, 60, 70, 255))
 
-    await message.edit("🎨 Cоздаю карточку...")
-    await asyncio.sleep(0.4)
-
-    # Фон
-    bg = raw_img.resize((1000, 400))
-    bg = bg.filter(ImageFilter.BoxBlur(radius=20))
-
+    bg = raw_img.resize((1000, 400)).filter(ImageFilter.BoxBlur(radius=20))
     overlay = Image.new("RGBA", bg.size, (0, 0, 0, 165))
     bg = Image.alpha_composite(bg.convert("RGBA"), overlay)
-
     draw = ImageDraw.Draw(bg)
 
-    # Обложка
-    cover_size = 260
-    cover_img = raw_img.resize((cover_size, cover_size))
+    cover = raw_img.resize((260, 260))
+    mask = Image.new("L", (260, 260), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, 260, 260), radius=35, fill=255)
+    cover.putalpha(mask)
+    bg.alpha_composite(cover, (70, 70))
 
-    mask = Image.new("L", (cover_size, cover_size), 0)
-    mask_draw = ImageDraw.Draw(mask)
-    mask_draw.rounded_rectangle((0, 0, cover_size, cover_size), radius=35, fill=255)
-    cover_img.putalpha(mask)
+    title = audio.title or "Неизвестный трек"
+    performer = audio.performer or "Неизвестный исполнитель"
+    duration = audio.duration or 0
+    duration_str = f"{duration // 60}:{duration % 60:02d}"
 
-    cover_x = 70
-    cover_y = (400 - cover_size) // 2
+    text_x = 350
+    draw.text((text_x, 100), title, font=font_music_title, fill="white")
+    draw.text((text_x, 150), performer, font=font_music_artist, fill=(190, 190, 190))
 
-    bg.alpha_composite(cover_img, (cover_x, cover_y))
+    bar_x, bar_y, bar_width, bar_height = text_x, 250, 560, 8
+    draw.rounded_rectangle((bar_x, bar_y, bar_x + bar_width, bar_y + bar_height), radius=4, fill=(66, 135, 245))
 
-    text_x = cover_x + cover_size + 60
+    draw.text((bar_x, bar_y + 18), duration_str, font=font_music_time, fill=(180, 180, 180))
+    draw.text((bar_x + bar_width - 45, bar_y + 18), duration_str, font=font_music_time, fill=(180, 180, 180))
 
-    title = getattr(audio, "title", None) or "Неизвестный трек"
-    performer = getattr(audio, "performer", None) or (reply.from_user.first_name if reply.from_user else "Неизвестный исполнитель")
-    duration = getattr(audio, "duration", 0) or 0
+    buf = BytesIO()
+    bg.convert("RGB").save(buf, "JPEG", quality=90)
+    buf.seek(0)
+    buf.name = "music.jpeg"
 
-    minutes = duration // 60
-    seconds = duration % 60
-    duration_str = f"{minutes}:{seconds:02d}"
-
-    # Обрезаем название, если слишком длинное
-    max_title_width = 560
-    while draw.textbbox((0, 0), title, font=font_music_title)[2] > max_title_width and len(title) > 3:
-        title = title[:-4] + "..."
-
-    draw.text((text_x, cover_y + 30), title, font=font_music_title, fill="white")
-    draw.text((text_x, cover_y + 80), performer, font=font_music_artist, fill=(190, 190, 190))
-
-    # Прогресс-бар
-    bar_x = text_x
-    bar_y = cover_y + cover_size - 50
-    bar_width = 560
-    bar_height = 8
-
-    draw.rounded_rectangle(
-        (bar_x, bar_y, bar_x + bar_width, bar_y + bar_height),
-        radius=4,
-        fill=(90, 90, 100)
-    )
-    draw.rounded_rectangle(
-        (bar_x, bar_y, bar_x + int(bar_width * 0.35), bar_y + bar_height),
-        radius=4,
-        fill=(66, 135, 245)
-    )
-
-    draw.text((bar_x, bar_y + 18), "0:00", font=font_music_time, fill=(180, 180, 180))
-    draw.text(
-        (bar_x + bar_width - 45, bar_y + 18),
-        duration_str,
-        font=font_music_time,
-        fill=(180, 180, 180)
-    )
-
-    await message.edit("📤 Отправляю...")
-    await asyncio.sleep(0.4)
-
-    final_buffer = BytesIO()
-    bg.convert("RGB").save(final_buffer, "JPEG", quality=90)
-    final_buffer.seek(0)
-    final_buffer.name = "music.jpeg"
-
-    await message.reply_photo(photo=final_buffer)
+    await message.reply_photo(photo=buf)
     await message.delete()
 
 @app.on_message(filters.me & filters.command("quote", prefixes=PREFIXES))
