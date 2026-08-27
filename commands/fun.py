@@ -42,8 +42,8 @@ async def music_card(client, message):
         return await message.edit("❌ В сообщение музыка не обнаружена")
 
     thumb_path = None
-    if audio.thumb:
-        thumb_path = await client.download_media(audio.thumb[-1].file_id, file_name = "avatarMusic.jpeg")
+    if audio.thumbs:
+        thumb_path = await client.download_media(audio.thumbs[-1].file_id, file_name = "avatarMusic.jpeg")
 
     if thumb_path:
         raw_img = Image.open(thumb_path).convert("RGBA")
