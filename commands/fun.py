@@ -75,7 +75,7 @@ async def music_card(client, message):
 
     text_x = 350
     draw.text((text_x, 100), title, font=font_music_title, fill="white")
-    draw.text((text_x, 150), author, font = font_music_artist, fill = (167, 167, 167, 255))
+    draw.text((text_x, 150), author, font=font_music_artist, fill=(167, 167, 167))
 
     await message.reply_photo(photo = final_buffer)
     await message.delete()
