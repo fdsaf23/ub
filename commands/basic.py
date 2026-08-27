@@ -12,6 +12,8 @@ async def help(client, message):
     text = """
 <b>Все команды бота</b>
 
+<b><u>Перед командой должна стоять <code>.</code> или <code>/</code> ❗</u></b>
+
 <blockquote>◻ Базовые:
  • <code>help</code> - список команд
  • <code>ping</code> - пинг
@@ -42,6 +44,7 @@ async def help(client, message):
  • <code>type</code> - анимация ввода
  • <code>dice (stop)</code> - игра с кубиком
  • <code>wanted</code> - карточка с розыском
+ • <code>music</code> - карточка музыки
 
 ◻ Работа с юзерами
  • <code>mute</code> - замутить (в лс)
