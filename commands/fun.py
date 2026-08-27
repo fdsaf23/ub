@@ -26,7 +26,7 @@ font_wanted_user = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 23
 font_wanted_username = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 20)
 font_reward = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 35)
 
-font_music_title = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 34)
+font_music_title = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 42)
 font_music_artist = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 26)
 font_music_time = ImageFont.truetype("fonts/FredokaOneCyrillic-Regular.ttf", 22)
 
@@ -68,9 +68,9 @@ async def music_card(client, message):
     duration = audio.duration 
     duration_str = f"{duration // 60}:{duration % 60:02d}"
 
-    text_x = 350
-    draw.text((500, 100), title, font=font_music_title, fill="white", anchor = "mm")
-    draw.text((500, 150), author, font=font_music_artist, fill=(167, 167, 167), anchor = "mm")
+    text_x = 370
+    draw.text((text_x, 100), title, font=font_music_title, fill="white", anchor = "mm")
+    draw.text((text_x, 150), author, font=font_music_artist, fill=(167, 167, 167), anchor = "mm")
     
     final_buffer = BytesIO()
     bg.convert("RGB").save(final_buffer, "JPEG", quality = 90)
