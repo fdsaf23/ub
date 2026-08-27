@@ -53,7 +53,7 @@ async def music_card(client, message):
     bg = raw_img.resize((1000, 400))
     bg = bg.filter(ImageFilter.BoxBlur(radius = 17))
     overlay = Image.new("RGBA", bg.size, (0, 0, 0, 160))
-    bg = Image.alpha_composite(bg.convert("RGB"), overlay)
+    bg = Image.alpha_composite(bg.convert("RGBA"), overlay)
 
     draw = ImageDraw.draw(bg)
     
